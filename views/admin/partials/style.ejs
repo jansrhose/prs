@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Record Table</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+  <!-- Fontawesome CDN Link -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Antonio&family=Lato:ital,wght@0,100;0,300;0,700;1,100;1,300;1,700&display=swap');
+
+    * {
+      box-sizing: border-box;
+      font-family: "Antonio";
+      font-weight: bold;
+    }
+
+    body {
+      margin: 0;
+      background-color: #F7E1AE;
+    }
+
+    /* TOP NAVIGATION BAR */
+    .topnav {
+      background-color: #617A55;
+      display: flex;
+      padding: 14px 16px;
+    }
+
+    /* HAMBURGER ICON */
+    .topnav .icon {
+      display: block;
+      color: white;
+      margin-top: 5px;
+    }
+
+    /* ADD RECORD AND PRINT MASTER LIST BUTTON */
+    .topnav .addpersonnel, .masterlist{
+        margin-left: 15px;
+    }
+
+    .addpersonnel .btnaddmodal, .masterlist .btnmastermodal{
+        background-color: #FFF8D6;
+    }
+
+    .addpersonnel .btnaddmodal:hover, .btnmastermodal:hover{
+        background-color: #e6e0c2;
+    }
+
+    /* SEARCH BAR */
+    .search-container {
+        margin-left: auto;
+        width: 400px;
+    }
+
+    /* SIDE NAVIGATION BAR */
+    .sidenav {
+      height: 100%;
+      width: 0;
+      position: fixed;
+      z-index: 1;
+      top: 0;
+      left: 0;
+      background-color: black;
+      overflow-x: hidden;
+      transition: 0.5s;
+      padding-top: 60px;
+    }
+
+    /* SIDE NAVBAR CLOSE BUTTON */
+    .sidenav .closebtn {
+      position: absolute;
+      top: 0;
+      left: 0;
+      padding: 14px 16px;
+      color: white;
+    }
+
+    /* SIDE NAVBAR TITLE */
+    .sidenav .content h1 {
+      text-align: center;
+      color: #FFF8D6;
+    }
+
+    /* SIDE NAVBAR LINKS */
+    .sidenav .side-links a {
+      position: relative;
+      padding: 8px 8px 8px 32px;
+      text-decoration: none;
+      font-size: 25px;
+      color: #FFF8D6;
+      display: block;
+      transition: 0.3s;
+      margin-top: 15px;
+    }
+
+    .sidenav .side-links a::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      height: 3px;
+      width: 25px;
+      background: #A4D0A4;
+      transition: width 0.3s ease;
+    }
+
+    .sidenav .side-links a:hover::before {
+      color: #A4D0A4;
+      width: 100%;
+    }
+
+    /* ACTIONS BUTTON */
+    .btn-fixed-width{
+        width: 120px;
+    }
+  </style>
+</head>
