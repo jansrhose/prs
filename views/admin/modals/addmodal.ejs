@@ -1,0 +1,457 @@
+<!-- ADD RECORD MODAL -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="btnaddmodalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <!-- MODAL HEADER -->
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="btnaddmodalLabel">ADD RECORD</h1>
+                <!-- MODAL CLOSE ICON -->
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <!-- MODAL BODY -->
+            <div class="modal-body">
+                <!-- ADD RECORD FORM -->
+                <form action="/admin/records" method="post" enctype="multipart/form-data">
+                    <!-- FIRST ROW -->
+                    <div class="row mb-3">
+                        <!-- ID PICTURE -->
+                        <div class="col-md-4">
+                            <label for="photo" class="form-label">ID Picture</label>
+                            <input type="file" class="form-control" id="photo" name="photo" accept="image/*" required>
+                            <img id="previewPhoto" src="" alt="Uploaded Photo" style="max-width: 100%; max-height: 200px; margin-top: 10px; display: none;">
+                        </div>
+
+                        <!-- FUNCTION FOR DISPLAYING THE PHOTO -->
+                        <script>
+                            // Display uploaded photo
+                            const photoInput = document.getElementById('photo');
+                            const previewPhoto = document.getElementById('previewPhoto');
+
+                            photoInput.addEventListener('change', function (event) {
+                                const file = event.target.files[0];
+                                const reader = new FileReader();
+                                reader.onload = function () {
+                                    previewPhoto.src = reader.result;
+                                    previewPhoto.style.display = 'block';
+                                }
+
+                                if (file) {
+                                    reader.readAsDataURL(file); // Read and convert the selected file to a data URL
+                                }
+                            });
+                        </script>
+
+                        <!-- EMPLOYEE NUMBER-->
+                        <div class="col-md-4">
+                            <label for="employeeNumber" class="form-label">Employee Number (XXXX-XXXX)</label>
+                            <input type="text" class="form-control" id="employeeNumber" name="employeeNumber" pattern="[A-Za-z0-9]{4}-[A-Za-z0-9]{4}" required>
+                            <span id="employeeNumberError" style="color: red; display: none;">Employee Number already exists!</span>
+                        </div>
+
+                        <!-- FUNCTION FOR THE ERROR MESSAGE AND FORMAT -->
+                        <script>
+                            // Function to format the employee number input
+                            function formatEmployeeNumber() {
+                                const employeeNumberInput = document.getElementById('employeeNumber');
+                                let formattedValue = employeeNumberInput.value.replace(/\D/g, '');
+                                if (formattedValue.length > 8) {
+                                    formattedValue = formattedValue.slice(0, 8);
+                                }
+                                formattedValue = formattedValue.replace(/(\d{4})(\d{4})/, '$1-$2');
+                                employeeNumberInput.value = formattedValue;
+                            }
+                        
+                            // Add event listener to the employee number input field
+                            const employeeNumberInput = document.getElementById('employeeNumber');
+                            employeeNumberInput.addEventListener('input', formatEmployeeNumber);
+                        
+                             // Function to check if the employee number already exists in the database
+                            async function checkEmployeeNumberExists(inputValue) {
+                                try {
+                                const response = await fetch(`/check-employee-number/${inputValue}`);
+                                const data = await response.json();
+                                return data.exists;
+                                } catch (error) {
+                                console.error(error);
+                                return false;
+                                }
+                            }
+
+                            // Function to handle the change event of the employee number input
+                            async function handleEmployeeNumberChange() {
+                                const employeeNumberInput = document.getElementById('employeeNumber');
+                                const employeeNumberError = document.getElementById('employeeNumberError');
+
+                                // Check if the employee number already exists
+                                const inputValue = employeeNumberInput.value;
+                                const employeeNumberExists = await checkEmployeeNumberExists(inputValue);
+
+                                if (employeeNumberExists) {
+                                employeeNumberInput.classList.add('is-invalid');
+                                employeeNumberError.style.display = 'block';
+                                } else {
+                                employeeNumberInput.classList.remove('is-invalid');
+                                employeeNumberError.style.display = 'none';
+                                }
+                            }
+
+                            // Add event listener to the employee number input field
+                            employeeNumberInput.addEventListener('change', handleEmployeeNumberChange);
+                        </script>
+                       
+                        <!-- RANK -->
+                        <div class="col-md-4">
+                            <label for="rank" class="form-label">Rank</label>
+                            <select class="form-select" id="rank" name="rank" required>
+                                <option value="" selected disabled>Select Rank</option>
+                                <option value="Corrections Chief Superintendent">C. Chief Superintendent</option>
+                                <option value="Corrections Senior Superintendent">C. Senior Superintendent</option>
+                                <option value="Corrections Superintendent">C. Superintendent</option>
+                                <option value="Corrections Chief Inspector">C. Chief Inspector</option>
+                                <option value="Corrections Inspector">C. Inspector</option>
+                                <option value="Corrections Senior Officer 4">C. Senior Officer 4</option>
+                                <option value="Corrections Senior Officer 3">C. Senior Officer 3</option>
+                                <option value="Corrections Senior Officer 2">C. Senior Officer 2</option>
+                                <option value="Corrections Senior Officer 1">C. Senior Officer 1</option>
+                                <option value="Corrections Officer 3">C. Officer 3</option>
+                                <option value="Corrections Officer 2">C. Officer 2</option>
+                                <option value="Corrections Officer 1">C. Officer 1</option>
+                                <option value="Corrections Technical Chief Superintendent">C.T Chief Superintendent</option>
+                                <option value="Corrections Technical Senior Superintendent">C.T Senior Superintendent</option>
+                                <option value="Corrections Technical Superintendent">C.T Superintendent</option>
+                                <option value="Corrections Technical Chief Inspector">C.T Chief Inspector</option>
+                                <option value="Corrections Technical Inspector">C.T Inspector</option>
+                                <option value="Corrections Technical Senior Officer 4">C.T Senior Officer 4</option>
+                                <option value="Corrections Technical Senior Officer 3">C.T Senior Officer 3</option>
+                                <option value="Corrections Technical Senior Officer 2">C.T Senior Officer 2</option>
+                                <option value="Corrections Technical Senior Officer 1">C.T Senior Officer 1</option>
+                                <option value="Corrections Technical Officer 3">C.T Officer 3</option>
+                                <option value="Corrections Technical Officer 2">C.T Officer 2</option>
+                                <option value="Corrections Technical Officer 1">C.T Officer 1</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- SECOND ROW -->
+                    <div class="row mb-3">
+                        <!-- FIRST NAME -->
+                        <div class="col-md-4">
+                            <label for="firstName" class="form-label">First Name</label>
+                            <input type="text" class="form-control" id="firstName" name="firstName" required>
+                        </div>
+
+                        <!-- MIDDLE NAME -->
+                        <div class="col-md-4">
+                            <label for="middleName" class="form-label">Middle Name</label>
+                            <input type="text" class="form-control" id="middleName" name="middleName">
+                        </div>
+
+                        <!-- LAST NAME -->
+                        <div class="col-md-4">
+                            <label for="lastName" class="form-label">Last Name</label>
+                            <input type="text" class="form-control" id="lastName" name="lastName" required>
+                        </div>
+                    </div>
+
+                    <!-- THIRD ROW -->
+                    <div class="row mb-3">
+                        <!-- GENDER -->
+                        <div class="col-md-4">
+                            <label class="form-label">Gender</label>
+                            <!-- MALE -->
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="gender" id="male" value="Male" required>
+                                <label class="form-check-label" for="male">Male</label>
+                            </div>
+
+                            <!-- FEMALE-->
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="gender" id="female" value="Female" required>
+                                <label class="form-check-label" for="female">Female</label>
+                            </div>
+                        </div>
+
+                        <!-- BIRTHDATE -->
+                        <div class="col-md-4">
+                            <label for="birthdate" class="form-label">Birthdate</label>
+                            <input type="date" class="form-control" id="birthdate" name="birthdate" required>
+                        </div>
+
+                        <!-- AGE -->
+                        <div class="col-md-4">
+                            <label for="age" class="form-label">Age</label>
+                            <input type="number" class="form-control" id="age" name="age" min="0" readonly>
+                        </div>
+
+                        <!-- FUNCTIONS FOR CALCULATION OF AGE FROM BIRTHDATE -->
+                        <script>
+                            // Calculate age from birthdate
+                            const birthdateInput = document.getElementById('birthdate');
+                            const ageInput = document.getElementById('age');
+                            birthdateInput.addEventListener('change', function (event) {
+                                const birthdate = new Date(event.target.value);
+                                const now = new Date();
+
+                                // Calculate the difference in years, months, and days
+                                let ageYears = now.getFullYear() - birthdate.getFullYear();
+                                let ageMonths = now.getMonth() - birthdate.getMonth();
+                                let ageDays = now.getDate() - birthdate.getDate();
+
+                                // Adjust the age if birthdate month and day haven't occurred yet this year
+                                if (ageMonths < 0 || (ageMonths === 0 && ageDays < 0)) {
+                                    ageYears--;
+                                }
+
+                            ageInput.value = ageYears; // Display the calculated age in the corresponding input field
+                            });
+                        </script>
+                    </div>
+
+                    <!-- FOURTH ROW -->
+                    <div class="row mb-3">
+                        <!-- MOBILE NUMBER -->
+                        <div class="col-md-4">
+                            <label for="mobileNumber" class="form-label">Contact</label>
+                            <input type="text" class="form-control" id="mobileNumber" name="mobileNumber" maxlength="13" required>
+                            <span id="mobileNumberError" class="form-text text-danger"></span>
+                        </div>
+
+                        <!--Function to format the mobile number input-->
+                        <script>
+                            function formatMobileNumber() {
+                                const mobileNumberInput = document.getElementById('mobileNumber');
+                                let formattedValue = mobileNumberInput.value.replace(/\D/g, ''); // Remove non-numeric characters
+
+                                if (formattedValue.length > 11) {
+                                    formattedValue = formattedValue.slice(0, 11); // Trim to 11 digits
+                                }
+
+                                // Insert the hyphens for formatting
+                                if (formattedValue.length > 7) {
+                                    formattedValue = formattedValue.replace(/^(\d{4})(\d{3})(\d{4})$/, '$1-$2-$3');
+                                } else if (formattedValue.length > 3) {
+                                    formattedValue = formattedValue.replace(/^(\d{4})(\d{3})$/, '$1-$2');
+                                }
+
+                                mobileNumberInput.value = formattedValue;
+                            }
+
+                            // Add event listener to the mobile number input field for formatting
+                            const mobileNumberInput = document.getElementById('mobileNumber');
+                            mobileNumberInput.addEventListener('input', formatMobileNumber);
+
+                            // Function to validate the mobile number length
+                            function validateMobileNumberLength() {
+                                const mobileNumberInput = document.getElementById('mobileNumber');
+                                const mobileNumberError = document.getElementById('mobileNumberError');
+                                const mobileNumber = mobileNumberInput.value.replace(/\D/g, ''); // Remove non-numeric characters
+                                const isValid = mobileNumber.length === 11;
+
+                                if (!isValid) {
+                                    mobileNumberError.textContent = "Contact Number should be 11 digits";
+                                } else {
+                                    mobileNumberError.textContent = ""; // Clear the error message if valid
+                                }
+
+                                // Disable further input if 11 digits have been entered
+                                mobileNumberInput.maxLength = isValid ? 13 : 11;
+                            }
+
+                            // Add event listener to the mobile number input field for validation
+                            mobileNumberInput.addEventListener('input', validateMobileNumberLength);
+                        </script>
+
+                        <!-- EMAIL -->
+                        <div class="col-md-4">
+                            <label for="emailAddress" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="emailAddress" name="emailAddress" required>
+                        </div>
+
+                        <!-- ADDRESS -->
+                        <div class="col-md-4">
+                            <label for="homeAddress" class="form-label">Address</label>
+                            <input type="text" class="form-control" id="homeAddress" name="homeAddress" required>
+                        </div>
+                    </div>
+
+                    <!-- FIFTH ROW -->
+                    <div class="row mb-3">
+                        <!-- CIVIL STATUS -->
+                        <div class="col-md-4">
+                            <label for="civilStatus" class="form-label">Civil Status</label>
+                            <select class="form-select" id="civilStatus" name="civilStatus" required>
+                                <option value="" selected disabled>Select Civil Status</option>
+                                <option value="Single">Single</option>
+                                <option value="Married">Married</option>
+                                <option value="Seperated">Seperated</option>
+                                <option value="Divorced">Divorced</option>
+                                <option value="Widowed">Widowed</option>
+                            </select>
+                        </div>
+
+                        <!-- DEGREE -->
+                        <div class="col-md-4">
+                            <label for="degree" class="form-label">Degree</label>
+                            <select class="form-select" id="degree" name="degree" required>
+                                <option value="" selected disabled>Select Degree</option>
+                                <option value="Bachelor">Bachelor</option>
+                                <option value="Master">Master</option>
+                                <!-- Add more degrees as needed -->
+                            </select>
+                        </div>
+
+                        <!-- SPECIAL ORDER NUMBER -->
+                        <div class="col-md-4">
+                            <label for="specialOrderNumber" class="form-label">Special Order Number</label>
+                            <input type="text" class="form-control" id="specialOrderNumber" name="specialOrderNumber" pattern="[A-Za-z0-9]{4}-[A-Za-z0-9]{4}" required>
+                            <span id="specialOrderNumberError" style="color: red; display: none;">Special Order Number already exists!</span>
+                        </div>
+
+                        <!-- FUNCTION FOR THE ERROR MESSAGE AND FORMAT -->
+                        <script>
+                            // Function to format the employee number input
+                            function formatSpecialOrderNumber() {
+                                const specialOrderNumberInput = document.getElementById('specialOrderNumber');
+                                let formattedValue = specialOrderNumberInput.value.replace(/\D/g, '');
+                                if (formattedValue.length > 8) {
+                                    formattedValue = formattedValue.slice(0, 8);
+                                }
+                                formattedValue = formattedValue.replace(/(\d{4})(\d{4})/, '$1-$2');
+                                specialOrderNumberInput.value = formattedValue;
+                            }
+
+                            // Add event listener to the Special Order Number input field
+                            const specialOrderNumberInput = document.getElementById('specialOrderNumber');
+                            specialOrderNumberInput.addEventListener('input', formatSpecialOrderNumber);
+
+                            // Function to check if the Special Order Number already exists in the database
+                            async function checkSpecialOrderNumberExists(inputValue) {
+                                try {
+                                    const response = await fetch(`/check-special-order/${inputValue}`);
+                                    const data = await response.json();
+                                    return data.exists;
+                                } catch (error) {
+                                    console.error(error);
+                                    return false;
+                                }
+                            }
+                         
+                            // Function to handle the change event of the Special Order Number input
+                            async function handleSpecialOrderNumberChange() {
+                                const specialOrderNumberInput = document.getElementById('specialOrderNumber');
+                                const specialOrderNumberError = document.getElementById('specialOrderNumberError');
+
+                                // Check if the Special Order Number already exists
+                                const inputValue = specialOrderNumberInput.value;
+                                const specialOrderNumberExists = await checkSpecialOrderNumberExists(inputValue);
+
+                                if (specialOrderNumberExists) {
+                                specialOrderNumberInput.classList.add('is-invalid');
+                                specialOrderNumberError.style.display = 'block';
+                                } else {
+                                specialOrderNumberInput.classList.remove('is-invalid');
+                                specialOrderNumberError.style.display = 'none';
+                                }
+                            }
+                        
+                            // Add event listener to the employee number input field
+                            specialOrderNumberInput.addEventListener('change', handleSpecialOrderNumberChange);
+                        </script>
+                    </div>
+
+                    <!-- SIXTH ROW -->
+                    <div class="row mb-3">
+                        <!-- ENTRANCE TO DUTY -->
+                        <div class="col-md-4">
+                            <label for="entranceToDutyDate" class="form-label">Entrance to Duty Date</label>
+                            <input type="date" class="form-control" id="entranceToDutyDate" name="entranceToDutyDate" required>
+                        </div>
+
+                        <!-- ASSIGN TO CIW -->
+                        <div class="col-md-4">
+                            <label for="assignToCIWDate" class="form-label">Assign to CIW Date</label>
+                            <input type="date" class="form-control" id="assignToCIWDate" name="assignToCIWDate" required>
+                        </div>
+
+                        <!-- CORE UNIT -->
+                        <div class="col-md-4">
+                            <label for="coreUnit" class="form-label">Core Unit</label>
+                            <select class="form-select" id="coreUnit" name="coreUnit" required>
+                                <option value="" selected disabled>Select Core Unit</option>
+                                <option value="Superintendent's Office">Superintendent's Office</option>
+                                <option value="Deputy Superintendent's Office">Deputy Superintendent's Office</option>
+                                <option value="Public Information Office">Public Information Office</option>
+                                <option value="Planning and Colony Business Office">Planning and Colony Business Office</option>
+                                <option value="Administration Section">Administration Section</option>
+                                <option value="Human Resource Unit">Human Resource Unit</option>
+                                <option value="Finance Unit">Finance Unit</option>
+                                <option value="Supply Unit">Supply Unit</option>
+                                <option value="General Service Unit">General Service Unit</option>
+                                <option value="ARTA">ARTA</option>
+                                <option value="ICTU">ICTU</option>
+                                <option value="PMT Unit">PMT Unit</option>
+                                <option value="Learning and Development Unit">Learning and Development Unit</option>
+                                <option value="QMS Unit">QMS Unit</option>
+                                <option value="Records Unit">Records Unit</option>
+                                <option value="Operations Section">Operations Section</option>
+                                <option value="RDC">RDC</option>
+                                <option value="Overseer Office">Overseer Office</option>
+                                <option value="Health/Infirmary Unit">Health/Infirmary Unit</option>
+                                <option value="CTOU">CTOU</option>
+                                <option value="IIU">IIU</option>
+                                <option value="FOU">FOU</option>
+                                <option value="RSSU">RSSU</option>
+                                <option value="PDPU">PDPU</option>
+                                <option value="SUBPOENA/Court Unit">SUBPOENA/Court Unit</option>
+                                <option value="Separation Unit">Separation Unit</option>
+                                <option value="External Relations Unit">External Relations Unit</option>
+                                <option value="Shifting Unit">Shifting Unit</option>
+                                <option value="PVSU">PVSU</option>
+                                <option value="General Kitchen Unit">General Kitchen Unit</option>
+                                <option value="Reformation Section">Reformation Section</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- SEVENTH ROW -->
+                    <div class="row mb-3">
+                        <!-- PRE ASSIGNED -->
+                        <div class="col-md-4">
+                            <label class="form-label">Pre-Assigned</label>
+                            <!-- TRANSFER -->
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="preAssigned" id="transfer" value="Transfer" required>
+                                <label class="form-check-label" for="transfer">Transfer</label>
+                            </div>
+
+                            <!-- NOT TRANSFER -->
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="preAssigned" id="notTransfer" value="Not Transfer" required>
+                                <label class="form-check-label" for="notTransfer">Not Transfer</label>
+                            </div>
+                        </div>
+
+                        <!-- CONCURRENT -->
+                        <div class="col-md-4">
+                            <label for="concurrent" class="form-label">Concurrent</label>
+                            <textarea class="form-control" id="concurrent" name="concurrent" rows="3"></textarea>
+                        </div>
+
+                        <!-- REMARKS -->
+                        <div class="col-md-4">
+                            <label for="remarks" class="form-label">Remarks</label>
+                            <textarea class="form-control" id="remarks" name="remarks" rows="3"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- ADD BUTTON -->
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            <button type="submit" class="btn btn-primary">Add Record</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

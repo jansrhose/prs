@@ -14,378 +14,20 @@
             </a>
         </div>
 
-        <!-- ADD RECORD MODAL -->
-        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="btnaddmodalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-xl" role="document">
-                <div class="modal-content">
-                    <!-- MODAL HEADER -->
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="btnaddmodalLabel">ADD RECORD</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <!-- MODAL BODY -->
-                    <div class="modal-body">
-                        <!-- ADD RECORD FORM -->
-                        <form action="/admin/records" method="post" enctype="multipart/form-data">
-                            <!-- FIRST ROW -->
-                            <div class="row mb-3">
-                                <!-- ID PICTURE -->
-                                <div class="col-md-4">
-                                    <label for="photo" class="form-label">ID Picture</label>
-                                    <input type="file" class="form-control" id="photo" name="photo" accept="image/*">
-                                    <img id="previewPhoto" src="" alt="Uploaded Photo" style="max-width: 100%; max-height: 200px; margin-top: 10px; display: none;">
-                                </div>
-
-                                <!-- EMPLOYEE NUMBER-->
-                                <div class="col-md-4">
-                                    <label for="employeeNumber" class="form-label">Employee Number (XXXX-XXXX)</label>
-                                    <input type="text" class="form-control" id="employeeNumber" name="employeeNumber" pattern="[A-Za-z0-9]{4}-[A-Za-z0-9]{4}" required>
-                                    <span id="employeeNumberError" style="color: red; display: none;">Employee Number already exists!</span>
-                                </div>
-
-                                <!-- FUNCTION FOR THE ERROR MESSAGE AND FORMAT -->
-                                <script>
-                                    // Function to format the employee number input
-                                    function formatEmployeeNumber() {
-                                        const employeeNumberInput = document.getElementById('employeeNumber');
-                                        let formattedValue = employeeNumberInput.value.replace(/\D/g, '');
-                                        if (formattedValue.length > 8) {
-                                            formattedValue = formattedValue.slice(0, 8);
-                                        }
-                                        formattedValue = formattedValue.replace(/(\d{4})(\d{4})/, '$1-$2');
-                                        employeeNumberInput.value = formattedValue;
-                                    }
-                                
-                                    // Add event listener to the employee number input field
-                                    const employeeNumberInput = document.getElementById('employeeNumber');
-                                    employeeNumberInput.addEventListener('input', formatEmployeeNumber);
-                                
-                                    // Sample function to check if the employee number already exists (replace this with your own logic)
-                                    function checkEmployeeNumberExists(inputValue) {
-                                        // Sample array of existing employee numbers (replace this with your actual data)
-                                        const existingEmployeeNumbers = ['1234-5678', '9876-5432', '2468-1357'];
-                                
-                                        return existingEmployeeNumbers.includes(inputValue);
-                                    }
-                                
-                                    // Function to handle the change event of the employee number input
-                                    function handleEmployeeNumberChange() {
-                                        const employeeNumberInput = document.getElementById('employeeNumber');
-                                        const employeeNumberError = document.getElementById('employeeNumberError');
-                                
-                                        // Check if the employee number already exists
-                                        const inputValue = employeeNumberInput.value;
-                                        const employeeNumberExists = checkEmployeeNumberExists(inputValue);
-                                
-                                        if (employeeNumberExists) {
-                                            employeeNumberInput.classList.add('is-invalid');
-                                            employeeNumberError.style.display = 'block';
-                                        } else {
-                                            employeeNumberInput.classList.remove('is-invalid');
-                                            employeeNumberError.style.display = 'none';
-                                        }
-                                    }
-                                
-                                    // Add event listener to the employee number input field
-                                    employeeNumberInput.addEventListener('change', handleEmployeeNumberChange);
-                                </script>
-                               
-                                <!-- RANK -->
-                                <div class="col-md-4">
-                                    <label for="rank" class="form-label">Rank</label>
-                                    <select class="form-select" id="rank" name="rank" required>
-                                        <option value="" selected disabled>Select Rank</option>
-                                        <option value="Corrections Chief Superintendent">C. Chief Superintendent</option>
-                                        <option value="Corrections Senior Superintendent">C. Senior Superintendent</option>
-                                        <option value="Corrections Superintendent">C. Superintendent</option>
-                                        <option value="Corrections Chief Inspector">C. Chief Inspector</option>
-                                        <option value="Corrections Inspector">C. Inspector</option>
-                                        <option value="Corrections Senior Officer 4">C. Senior Officer 4</option>
-                                        <option value="Corrections Senior Officer 3">C. Senior Officer 3</option>
-                                        <option value="Corrections Senior Officer 2">C. Senior Officer 2</option>
-                                        <option value="Corrections Senior Officer 1">C. Senior Officer 1</option>
-                                        <option value="Corrections Officer 3">C. Officer 3</option>
-                                        <option value="Corrections Officer 2">C. Officer 2</option>
-                                        <option value="Corrections Officer 1">C. Officer 1</option>
-                                        <option value="Corrections Technical Chief Superintendent">C.T Chief Superintendent</option>
-                                        <option value="Corrections Technical Senior Superintendent">C.T Senior Superintendent</option>
-                                        <option value="Corrections Technical Superintendent">C.T Superintendent</option>
-                                        <option value="Corrections Technical Chief Inspector">C.T Chief Inspector</option>
-                                        <option value="Corrections Technical Inspector">C.T Inspector</option>
-                                        <option value="Corrections Technical Senior Officer 4">C.T Senior Officer 4</option>
-                                        <option value="Corrections Technical Senior Officer 3">C.T Senior Officer 3</option>
-                                        <option value="Corrections Technical Senior Officer 2">C.T Senior Officer 2</option>
-                                        <option value="Corrections Technical Senior Officer 1">C.T Senior Officer 1</option>
-                                        <option value="Corrections Technical Officer 3">C.T Officer 3</option>
-                                        <option value="Corrections Technical Officer 2">C.T Officer 2</option>
-                                        <option value="Corrections Technical Officer 1">C.T Officer 1</option>
-                                    </select>
-                                </div>
-                            </div>
-      
-                            <!-- SECOND ROW -->
-                            <div class="row mb-3">
-                                <!-- FIRST NAME -->
-                                <div class="col-md-4">
-                                    <label for="firstName" class="form-label">First Name</label>
-                                    <input type="text" class="form-control" id="firstName" name="firstName" required>
-                                </div>
-
-                                <!-- MIDDLE NAME -->
-                                <div class="col-md-4">
-                                    <label for="middleName" class="form-label">Middle Name</label>
-                                    <input type="text" class="form-control" id="middleName" name="middleName">
-                                </div>
-
-                                <!-- LAST NAME -->
-                                <div class="col-md-4">
-                                    <label for="lastName" class="form-label">Last Name</label>
-                                    <input type="text" class="form-control" id="lastName" name="lastName" required>
-                                </div>
-                            </div>
-      
-                            <!-- THIRD ROW -->
-                            <div class="row mb-3">
-                                <!-- GENDER -->
-                                <div class="col-md-4">
-                                    <label class="form-label">Gender</label>
-                                    <!-- MALE -->
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="gender" id="male" value="Male" required>
-                                        <label class="form-check-label" for="male">Male</label>
-                                    </div>
-
-                                    <!-- FEMALE-->
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="gender" id="female" value="Female" required>
-                                        <label class="form-check-label" for="female">Female</label>
-                                    </div>
-                                </div>
-
-                                <!-- BIRTHDATE -->
-                                <div class="col-md-4">
-                                    <label for="birthdate" class="form-label">Birthdate</label>
-                                    <input type="date" class="form-control" id="birthdate" name="birthdate" required>
-                                </div>
-
-                                <!-- AGE -->
-                                <div class="col-md-4">
-                                    <label for="age" class="form-label">Age</label>
-                                    <input type="number" class="form-control" id="age" name="age" min="0" readonly>
-                                </div>
-                            </div>
-      
-                            <!-- FOURTH ROW -->
-                            <div class="row mb-3">
-                                <!-- MOBILE NUMBER -->
-                                <div class="col-md-4">
-                                <label for="mobileNumber" class="form-label">Contact</label>
-                                <input type="number" class="form-control" id="mobileNumber" name="mobileNumber" pattern="[0-9]{11}" oninput="validateMobileNumber()">
-                                <span id="mobileNumberError" class="form-text text-danger"></span>
-                            </div>
-
-                            <script>
-                                function validateMobileNumber() {
-                                    const mobileNumberInput = document.getElementById('mobileNumber');
-                                    const mobileNumberError = document.getElementById('mobileNumberError');
-                                
-                                    const mobileNumber = mobileNumberInput.value;
-                                    const isValid = /^\d{11}$/.test(mobileNumber);
-                                
-                                    if (!isValid) {
-                                        mobileNumberError.textContent = "Contact Number should be 11 digits";
-                                    } else {
-                                        mobileNumberError.textContent = ""; // Clear the error message if valid
-                                    }
-                                }
-                                </script>
-                                
-
-                                <!-- EMAIL -->
-                                <div class="col-md-4">
-                                    <label for="emailAddress" class="form-label">Email</label>
-                                    <input type="email" class="form-control" id="emailAddress" name="emailAddress">
-                                </div>
-
-                                <!-- ADDRESS -->
-                                <div class="col-md-4">
-                                    <label for="homeAddress" class="form-label">Address</label>
-                                    <input type="text" class="form-control" id="homeAddress" name="homeAddress">
-                                </div>
-                            </div>
-      
-                            <!-- FIFTH ROW -->
-                            <div class="row mb-3">
-                                <!-- CIVIL STATUS -->
-                                <div class="col-md-4">
-                                    <label for="civilStatus" class="form-label">Civil Status</label>
-                                    <select class="form-select" id="civilStatus" name="civilStatus" required>
-                                        <option value="" selected disabled>Select Civil Status</option>
-                                        <option value="Single">Single</option>
-                                        <option value="Married">Married</option>
-                                        <option value="Seperated">Seperated</option>
-                                        <option value="Divorced">Divorced</option>
-                                        <option value="Widowed">Widowed</option>
-                                    </select>
-                                </div>
-
-                                <!-- DEGREE -->
-                                <div class="col-md-4">
-                                    <label for="degree" class="form-label">Degree</label>
-                                    <select class="form-select" id="degree" name="degree">
-                                        <option value="" selected disabled>Select Degree</option>
-                                        <option value="Bachelor">Bachelor</option>
-                                        <option value="Master">Master</option>
-                                        <!-- Add more degrees as needed -->
-                                    </select>
-                                </div>
-
-                                <!-- SPECIAL ORDER NUMBER -->
-                                <div class="col-md-4">
-                                    <label for="specialOrderNumber" class="form-label">Special Order Number</label>
-                                    <input type="text" class="form-control" id="specialOrderNumber" name="specialOrderNumber">
-                                </div>
-                            </div>
-      
-                            <!-- SIXTH ROW -->
-                            <div class="row mb-3">
-                                <!-- ENTRANCE TO DUTY -->
-                                <div class="col-md-4">
-                                    <label for="entranceToDutyDate" class="form-label">Entrance to Duty Date</label>
-                                    <input type="date" class="form-control" id="entranceToDutyDate" name="entranceToDutyDate">
-                                </div>
-
-                                <!-- ASSIGN TO CIW -->
-                                <div class="col-md-4">
-                                    <label for="assignToCIWDate" class="form-label">Assign to CIW Date</label>
-                                    <input type="date" class="form-control" id="assignToCIWDate" name="assignToCIWDate">
-                                </div>
-
-                                <!-- CORE UNIT -->
-                                <div class="col-md-4">
-                                    <label for="coreUnit" class="form-label">Core Unit</label>
-                                    <select class="form-select" id="coreUnit" name="coreUnit">
-                                        <option value="" selected disabled>Select Core Unit</option>
-                                        <option value="Superintendent's Office">Superintendent's Office</option>
-                                        <option value="Deputy Superintendent's Office">Deputy Superintendent's Office</option>
-                                        <option value="Public Information Office">Public Information Office</option>
-                                        <option value="Planning and Colony Business Office">Planning and Colony Business Office</option>
-                                        <option value="Administration Section">Administration Section</option>
-                                        <option value="Human Resource Unit">Human Resource Unit</option>
-                                        <option value="Finance Unit">Finance Unit</option>
-                                        <option value="Supply Unit">Supply Unit</option>
-                                        <option value="General Service Unit">General Service Unit</option>
-                                        <option value="ARTA">ARTA</option>
-                                        <option value="ICTU">ICTU</option>
-                                        <option value="PMT Unit">PMT Unit</option>
-                                        <option value="Learning and Development Unit">Learning and Development Unit</option>
-                                        <option value="QMS Unit">QMS Unit</option>
-                                        <option value="Records Unit">Records Unit</option>
-                                        <option value="Operations Section">Operations Section</option>
-                                        <option value="RDC">RDC</option>
-                                        <option value="Overseer Office">Overseer Office</option>
-                                        <option value="Health/Infirmary Unit">Health/Infirmary Unit</option>
-                                        <option value="CTOU">CTOU</option>
-                                        <option value="IIU">IIU</option>
-                                        <option value="FOU">FOU</option>
-                                        <option value="RSSU">RSSU</option>
-                                        <option value="PDPU">PDPU</option>
-                                        <option value="SUBPOENA/Court Unit">SUBPOENA/Court Unit</option>
-                                        <option value="Separation Unit">Separation Unit</option>
-                                        <option value="External Relations Unit">External Relations Unit</option>
-                                        <option value="Shifting Unit">Shifting Unit</option>
-                                        <option value="PVSU">PVSU</option>
-                                        <option value="General Kitchen Unit">General Kitchen Unit</option>
-                                        <option value="Reformation Section">Reformation Section</option>
-                                    </select>
-                                </div>
-                            </div>
-      
-                            <!-- SEVENTH ROW -->
-                            <div class="row mb-3">
-                                <!-- PRE ASSIGNED -->
-                                <div class="col-md-4">
-                                    <label class="form-label">Pre-Assigned</label>
-                                    <!-- TRANSFER -->
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="preAssigned" id="transfer" value="Transfer" required>
-                                        <label class="form-check-label" for="transfer">Transfer</label>
-                                    </div>
-
-                                    <!-- NOT TRANSFER -->
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="preAssigned" id="notTransfer" value="Not Transfer" required>
-                                        <label class="form-check-label" for="notTransfer">Not Transfer</label>
-                                    </div>
-                                </div>
-
-                                <!-- CONCURRENT -->
-                                <div class="col-md-4">
-                                    <label for="concurrent" class="form-label">Concurrent</label>
-                                    <textarea class="form-control" id="concurrent" name="concurrent" rows="3"></textarea>
-                                </div>
-
-                                <!-- REMARKS -->
-                                <div class="col-md-4">
-                                    <label for="remarks" class="form-label">Remarks</label>
-                                    <textarea class="form-control" id="remarks" name="remarks" rows="3"></textarea>
-                                </div>
-                            </div>
-      
-                            <!-- ADD BUTTON -->
-                            <div class="row mb-3">
-                                <div class="col-md-12">
-                                    <button type="submit" class="btn btn-primary">Add Record</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- FUNCTIONS FOR DISPLAY THE UPLOADED PHOTO AND CALCULATION OF AGE FROM BIRTHDATE -->
-        <script>
-            // Display uploaded photo
-            const photoInput = document.getElementById('photo');
-            const previewPhoto = document.getElementById('previewPhoto');
-
-            photoInput.addEventListener('change', function (event) {
-                const file = event.target.files[0];
-                const reader = new FileReader();
-                reader.onload = function () {
-                    previewPhoto.src = reader.result;
-                    previewPhoto.style.display = 'block';
-                }
-
-                if (file) {
-                    reader.readAsDataURL(file); // Read and convert the selected file to a data URL
-                }
-            });
-      
-            // Calculate age from birthdate
-            const birthdateInput = document.getElementById('birthdate');
-            const ageInput = document.getElementById('age');
-            birthdateInput.addEventListener('change', function (event) {
-                const birthdate = new Date(event.target.value);
-                const now = new Date();
-                const age = now.getFullYear() - birthdate.getFullYear();
-                ageInput.value = age; // Display the calculated age in the corresponding input field
-            });
-        </script>
+        <%- include('modals/addmodal') %>
 
         <!-- PRINT MASTER LIST TRIGGER BUTTON -->
         <div class="masterlist">
-            <a class="btn btnmastermodal btn-fixed-width" id="btnmastermodal" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            <a class="btn btnmastermodal btn-fixed-width" id="btnmastermodal" data-bs-toggle="" data-bs-target="">
                 <i class="fas fa-print"></i> Print List
             </a>
         </div>
 
         <!-- SEARCH BAR -->
         <div class="search-container">
-            <form action="/">
+            <form>
                 <div class="input-group">
-                    <input type="search" class="form-control rounded" id="searchInput" placeholder="Search" />
+                    <input type="search" class="form-control rounded" id="searchInput" placeholder="Search by Last Name, Gender, or Preassigned" />
                 </div>
             </form>
         </div>
@@ -398,7 +40,7 @@
                 const filter = input.value.toUpperCase();
                 const table = document.getElementById('personnelTable');
                 const rows = table.getElementsByTagName('tr');
-        
+
                 // Start the loop from index 1 to exclude the header row (index 0)
                 for (let i = 1; i < rows.length; i++) {
                     const cells = rows[i].getElementsByTagName('td');
@@ -406,21 +48,33 @@
                     for (let j = 0; j < cells.length; j++) {
                         const cell = cells[j];
                         if (cell) {
-                            const textValue = cell.textContent || cell.innerText;
-                            if (textValue.toUpperCase().indexOf(filter) > -1) {
-                                found = true;
-                                break;
+                            const cellClass = cell.getAttribute('class');
+                            if (cellClass === 'lastname' || cellClass === 'gender' || cellClass === 'preassigned') {
+                                const textValue = cell.textContent || cell.innerText;
+                                if (cellClass === 'gender' || cellClass === 'preassigned') {
+                                    // Perform exact match for gender and preassigned columns
+                                    if (textValue.trim().toUpperCase() === filter) {
+                                        found = true;
+                                        break;
+                                    }
+                                } else {
+                                    // For other columns (e.g., lastname), check for partial match
+                                    if (textValue.toUpperCase().indexOf(filter) > -1) {
+                                        found = true;
+                                        break;
+                                    }
+                                }
                             }
                         }
                     }
                     rows[i].style.display = found ? '' : 'none';
                 }
             }
-        
+
             // Add event listener to the search input field
             const searchInput = document.getElementById('searchInput');
             searchInput.addEventListener('keyup', searchTable);
-        </script>    
+        </script>
     </nav>
    
     <!-- SIDE NAVIGATION BAR -->
@@ -494,8 +148,8 @@
                     <td><%= personnel.rank %></td>
                     <td><%= personnel.firstName %></td>
                     <td><%= personnel.middleName ? personnel.middleName[0] : '' %></td>
-                    <td><%= personnel.lastName %></td>
-                    <td><%= personnel.gender %></td>
+                    <td class="lastname"><%= personnel.lastName %></td>
+                    <td class="gender"><%= personnel.gender %></td>
                     <td><%= personnel.birthdate.toISOString().split('T')[0] %></td>
                     <td><%= personnel.age %></td>
                     <td><%= personnel.mobileNumber %></td>
@@ -507,7 +161,7 @@
                     <td><%= personnel.entranceToDutyDate.toISOString().split('T')[0] %></td>
                     <td><%= personnel.assignToCIWDate.toISOString().split('T')[0] %></td>
                     <td><%= personnel.coreUnit %></td>
-                    <td><%= personnel.preAssigned %></td>
+                    <td class="preassigned"><%= personnel.preAssigned %></td>
                     <td><%= personnel.concurrent %></td>
                     <td><%= personnel.remarks %></td>
                     <!-- ACTIONS -->
@@ -530,7 +184,7 @@
 
                                     <!-- MODAL BODY -->
                                     <div class="modal-body">
-                                        <form>
+                                        <form action="/admin/records" method="post" enctype="multipart/form-data">
                                             <!-- FIRST ROW -->
                                             <div class="row mb-3">
                                                 <!-- ID PICTURE -->
@@ -557,7 +211,7 @@
                                                     <label class="form-label" id="rank"><%= personnel.rank %></label>
                                                 </div>
                                             </div>
-  
+
                                             <!-- SECOND ROW -->
                                             <div class="row mb-3">
                                                 <!-- FIRST NAME -->
@@ -578,7 +232,7 @@
                                                     <label class="form-label" id="lastName"><%= personnel.lastName %></label>
                                                 </div>
                                             </div>
-  
+
                                             <!-- THIRD ROW -->
                                             <div class="row mb-3">
                                                 <!-- GENDER -->
@@ -599,7 +253,7 @@
                                                     <label class="form-label" id="age"><%= personnel.age %></label>
                                                 </div>
                                             </div>
-  
+
                                             <!-- FOURTH ROW -->
                                             <div class="row mb-3">
                                                 <!-- MOBILE NUMBER -->
@@ -620,7 +274,7 @@
                                                     <label class="form-label" id="homeAddress"><%= personnel.homeAddress %></label>
                                                 </div>
                                             </div>
-  
+
                                             <!-- FIFTH ROW -->
                                             <div class="row mb-3">
                                                 <!-- CIVIL STATUS -->
@@ -641,7 +295,7 @@
                                                     <label class="form-label" id="specialOrderNumber"><%= personnel.specialOrderNumber %></label>
                                                 </div>
                                             </div>
-  
+
                                             <!-- SIXTH ROW -->
                                             <div class="row mb-3">
                                                 <!-- ENTRANCE TO DUTY -->
@@ -662,7 +316,7 @@
                                                     <label class="form-label" id="coreUnit"><%= personnel.coreUnit %></label>
                                                 </div>
                                             </div>
-  
+
                                             <!-- SEVENTH ROW -->
                                             <div class="row mb-3">
                                                 <!-- PRE ASSIGNED -->
@@ -684,8 +338,8 @@
                                                 </div>
                                             </div>
 
-                                             <!-- PRINT BUTTON -->
-                                             <div class="row mb-3">
+                                            <!-- PRINT BUTTON -->
+                                            <div class="row mb-3">
                                                 <div class="col-md-12">
                                                     <button type="submit" class="btn btn-primary" onclick="printRecord()">Print</button>
                                                 </div>
@@ -702,9 +356,9 @@
                                 </div>
                             </div>
                         </div>
-                
-                        <!-- EDIT TRIGGER BUTTON -->
-                        <button type="button" class="btn btn-warning mb-2 btn-fixed-width" data-bs-toggle="modal" data-bs-target="#EditModal<%= personnel.id %>">
+
+                         <!-- EDIT TRIGGER BUTTON -->
+                         <button type="button" class="btn btn-warning mb-2 btn-fixed-width" data-bs-toggle="modal" data-bs-target="#EditModal<%= personnel.id %>">
                             <i class="fas fa-pencil-alt fa-fw"></i> Edit
                         </button>
 
@@ -725,17 +379,65 @@
                                             <div class="row mb-3">
                                                 <!-- ID PICTURE -->
                                                 <div class="col-md-4">
-                                                    <label for="photo" class="form-label">ID Picture</label>
-                                                    <input type="file" class="form-control" id="photo" name="photo" accept="image/*">
                                                     <img id="previewPhoto" src="<%= personnel.photo ? '/personnel/photo/' + personnel.id : '' %>" alt="Uploaded Photo" style="max-width: 100%; max-height: 200px; margin-top: 10px; <% if (!personnel.photo) { %>display: none;<% } %>">
                                                 </div>
+                                            </div>
 
+                                            <!-- SECOND ROW -->
+                                            <div class="row mb-3">
                                                 <!-- EMPLOYEE NUMBER -->
                                                 <div class="col-md-4">
-                                                    <label for="employeeNumber" class="form-label">Employee Number (XXXX-XXXX)</label>
-                                                    <input type="text" class="form-control" id="employeeNumber" name="employeeNumber" pattern="[A-Za-z0-9]{4}-[A-Za-z0-9]{4}" value="<%= personnel.employeeNumber %>" required>
+                                                    <label for="employeeNumber" class="form-label">Employee Number: </label>
+                                                    <label class="form-label" id="employeeNumber"><%= personnel.employeeNumber %></label>
+                                                </div>
+                                            </div>
+
+                                            <!-- THIRD ROW -->
+                                            <div class="row mb-3">
+                                                <!-- FIRST NAME -->
+                                                <div class="col-md-4">
+                                                    <label for="firstName" class="form-label">First Name: </label>
+                                                    <label class="form-label" id="firstName"><%= personnel.firstName %></label>
                                                 </div>
 
+                                                <!-- MIDDLE NAME -->
+                                                <div class="col-md-4">
+                                                    <label for="middleName" class="form-label">Middle Name: </label>
+                                                    <label class="form-label" id="middleName"><%= personnel.middleName %></label>
+                                                </div>
+
+                                                <!-- LAST NAME -->
+                                                <div class="col-md-4">
+                                                    <label for="lastName" class="form-label">Last Name: </label>
+                                                    <label class="form-label" id="lastName"><%= personnel.lastName %></label>
+                                                </div>
+                                            </div>
+
+                                            <!-- FOURTH ROW -->
+                                            <div class="row mb-3">
+                                                <!-- GENDER -->
+                                                <div class="col-md-4">
+                                                    <label class="form-label">Gender: </label>
+                                                    <label class="form-label" id="gender"><%= personnel.gender %></label>
+                                                </div>
+
+                                                <!-- BIRTHDATE -->
+                                                <div class="col-md-4">
+                                                    <label for="birthdate" class="form-label">Birthdate: </label>
+                                                    <label class="form-label" id="birthdate"><%= personnel.birthdate.toISOString().split('T')[0] %></label>
+                                                </div>
+
+                                                <!-- AGE -->
+                                                <div class="col-md-4">
+                                                    <label for="age" class="form-label">Age: </label>
+                                                    <label class="form-label" id="age"><%= personnel.age %></label>
+                                                </div>
+                                            </div>
+
+                                            <div class="line mb-2"></div>
+                                            
+                                            <!-- FIFTH ROW -->
+                                            <div class="row mb-3">
                                                 <!-- RANK -->
                                                 <div class="col-md-4">
                                                     <label for="rank" class="form-label">Rank</label>
@@ -768,65 +470,14 @@
                                                     </select>
                                                 </div>
                                             </div>
-                  
-                                            <!-- SECOND ROW -->
-                                            <div class="row mb-3">
-                                                <!-- FIRST NAME -->
-                                                <div class="col-md-4">
-                                                    <label for="firstName" class="form-label">First Name</label>
-                                                    <input type="text" class="form-control" id="firstName" name="firstName" value="<%= personnel.firstName %>" required>
-                                                </div>
+                                            
 
-                                                <!-- MIDDLE NAME -->
-                                                <div class="col-md-4">
-                                                    <label for="middleName" class="form-label">Middle Name</label>
-                                                    <input type="text" class="form-control" id="middleName" name="middleName" value="<%= personnel.middleName %>">
-                                                </div>
-
-                                                <!-- LAST NAME -->
-                                                <div class="col-md-4">
-                                                    <label for="lastName" class="form-label">Last Name</label>
-                                                    <input type="text" class="form-control" id="lastName" name="lastName" value="<%= personnel.lastName %>" required>
-                                                </div>
-                                            </div>
-                  
-                                            <!-- THIRD ROW -->
-                                            <div class="row mb-3">
-                                                <!-- GENDER -->
-                                                <div class="col-md-4">
-                                                    <label class="form-label">Gender</label>
-                                                    <!-- MALE -->
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="radio" name="gender" id="male" value="Male" <% if (personnel.gender === "Male") { %>checked<% } %> required>
-                                                        <label class="form-check-label" for="male">Male</label>
-                                                    </div>
-
-                                                    <!-- FEMALE -->
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="radio" name="gender" id="female" value="Female" <% if (personnel.gender === "Female") { %>checked<% } %> required>
-                                                        <label class="form-check-label" for="female">Female</label>
-                                                    </div>
-                                                </div>
-
-                                                <!-- BIRTHDATE -->
-                                                <div class="col-md-4">
-                                                    <label for="birthdate" class="form-label">Birthdate</label>
-                                                    <input type="date" class="form-control" id="birthdate" name="birthdate" value="<%= personnel.birthdate.toISOString().split('T')[0] %>" required>
-                                                </div>
-
-                                                <!-- AGE -->
-                                                <div class="col-md-4">
-                                                    <label for="age" class="form-label">Age</label>
-                                                    <input type="number" class="form-control" id="age" name="age" min="0" value="<%= personnel.age %>" readonly>
-                                                </div>
-                                            </div>
-
-                                            <!-- FOURTH ROW -->
+                                            <!-- SIXTH ROW -->
                                             <div class="row mb-3">
                                                 <!-- MOBILE NUMBER -->
                                                 <div class="col-md-4">
                                                     <label for="mobileNumber" class="form-label">Contact</label>
-                                                    <input type="number" class="form-control" id="mobileNumber" name="mobileNumber" pattern="[0-9]{11}" value="<%= personnel.mobileNumber %>">
+                                                    <input type="text" class="form-control" id="mobileNumber" name="mobileNumber" value="<%= personnel.mobileNumber %>">
                                                 </div>
 
                                                 <!-- EMAIL -->
@@ -841,8 +492,8 @@
                                                     <input type="text" class="form-control" id="homeAddress" name="homeAddress" value="<%= personnel.homeAddress %>">
                                                 </div>
                                             </div>
-                  
-                                            <!-- FIFTH ROW -->
+
+                                            <!-- SEVENTH ROW -->
                                             <div class="row mb-3">
                                                 <!-- CIVIL STATUS -->
                                                 <div class="col-md-4">
@@ -874,8 +525,8 @@
                                                     <input type="text" class="form-control" id="specialOrderNumber" name="specialOrderNumber" value="<%= personnel.specialOrderNumber %>">
                                                 </div>
                                             </div>
-                  
-                                            <!-- SIXTH ROW -->
+
+                                            <!-- EIGHTH ROW -->
                                             <div class="row mb-3">
                                                 <!-- ENTRANCE TO DUTY -->
                                                 <div class="col-md-4">
@@ -928,8 +579,8 @@
                                                     </select>
                                                 </div>
                                             </div>
-                  
-                                            <!-- SEVENTH ROW -->
+
+                                            <!-- NINETH ROW -->
                                             <div class="row mb-3">
                                                 <!-- PRE ASSIGNED -->
                                                 <div class="col-md-4">
@@ -971,7 +622,7 @@
                                 </div>
                             </div>
                         </div>
-                
+            
                         <!-- DELETE TRIGGER BUTTON -->
                         <button type="button" class="btn btn-danger mb-2 btn-fixed-width text-black" data-bs-toggle="modal" data-bs-target="#DeleteModal<%= personnel.id %>">
                             <i class="fas fa-trash-alt fa-fw"></i> Delete
@@ -984,6 +635,7 @@
                                     <!-- MODAL HEADER -->
                                     <div class="modal-header">
                                         <h5 class="modal-title">Delete Record</h5>
+                                        <!-- MODAL CLOSE ICON -->
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <!-- MODAL BODY -->
@@ -992,12 +644,12 @@
                                     </div>
                                     <!-- MODAL FOOTER -->
                                     <div class="modal-footer">
-                                        <!-- FORM FOR BUTTON -->
-                                        <form action="/admin/records/<%= personnel.id %>?_method=DELETE" method="post">
+                                        <!-- FORM FOR BUTTON --> 
+                                        <form action="/admin/records/delete/<%= personnel.id %>" method="post">
                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                                             <button type="submit" class="btn btn-danger">Delete</button>
-                                        </form>
-                                    </div>
+                                        </form>                                                                                                                        
+                                    </div>                                     
                                 </div>
                             </div>
                         </div>

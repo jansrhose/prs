@@ -8,6 +8,7 @@ const upload = multer().single('photo');
 const fs = require('fs');
 const flash = require('express-flash');
 const session = require('express-session');
+const cron = require('node-cron');
 
 // Add session middleware
 router.use(session({
@@ -29,6 +30,30 @@ function validateSession(req, res, next) {
     res.redirect('/');
   }
 }
+// Schedule the yearly task to update the birthdates
+cron.schedule('0 0 1 1 *', async () => {
+  try {
+    // Retrieve all personnel records from the database
+    const allPersonnel = await prisma.personnel.findMany();
+
+    // Update the birthdate for each personnel record
+    for (const personnel of allPersonnel) {
+      const currentYear = new Date().getFullYear();
+      const birthdateWithoutYear = new Date(personnel.birthdate).toISOString().slice(5);
+      const updatedBirthdate = new Date(`${currentYear}-${birthdateWithoutYear}`);
+
+      // Update the birthdate in the database
+      await prisma.personnel.update({
+        where: { id: personnel.id },
+        data: { birthdate: updatedBirthdate },
+      });
+    }
+  } catch (error) {
+    console.error('Error updating birthdates:', error);
+  }
+});
+
+
 
 // Define the validation schema using Joi
 const personnelSchema = Joi.object({
@@ -82,12 +107,15 @@ router.get('/personnel/photo/:id', async function (req, res, next) {
 router.get('/admin/records', validateSession, async function (req, res, next) {
   try {
     const personnels = await prisma.personnel.findMany();
+
     res.render('admin/records', { title: 'Express', personnels });
   } catch (error) {
     console.error(error);
     res.status(500).send('Internal Server Error');
   }
 });
+
+
 
 // POST add personnel record
 router.post('/admin/records', validateSession, upload, async function (req, res, next) {
@@ -199,14 +227,20 @@ router.post('/admin/records/:id', validateSession, upload, async function (req, 
       coreUnit,
       concurrent,
       remarks,
+      preAssigned,
     } = value;
 
-    const photoData = req.file ? req.file.buffer : null;
+    // Check if the image is uploaded (req.file is present)
+    let photoData;
+    if (req.file) {
+      photoData = req.file.buffer;
+    }
 
     await prisma.personnel.update({
       where: { id: personnelId },
       data: {
-        photo: photoData,
+        // Conditionally update the photo field
+        ...(photoData && { photo: photoData }),
         employeeNumber,
         rank,
         firstName,
@@ -224,9 +258,9 @@ router.post('/admin/records/:id', validateSession, upload, async function (req, 
         entranceToDutyDate,
         assignToCIWDate,
         coreUnit,
-        preAssigned,
         concurrent,
         remarks,
+        preAssigned,
       },
     });
 
@@ -239,10 +273,12 @@ router.post('/admin/records/:id', validateSession, upload, async function (req, 
   }
 });
 
+
+
 // DELETE personnel record
-router.delete('/admin/records/:id', validateSession, async (req, res, next) => {
+router.post('/admin/records/delete/:id', validateSession, async (req, res, next) => {
   try {
-    const personnelId = req.params.id;
+    const personnelId = req.params.id; // Extract personnelId from the URL parameter
 
     const existingPersonnel = await prisma.personnel.findUnique({
       where: {
@@ -269,5 +305,47 @@ router.delete('/admin/records/:id', validateSession, async (req, res, next) => {
     res.redirect('/admin/records');
   }
 });
+
+// Server-side route to check if the employee number exists
+router.get('/check-employee-number/:employeeNumber', validateSession, async function (req, res, next) {
+  try {
+    const { employeeNumber } = req.params;
+
+    // Query the database to check if the employee number exists
+    const existingPersonnel = await prisma.personnel.findMany({
+      where: {
+        employeeNumber: employeeNumber,
+      },
+    });
+
+    const exists = existingPersonnel.length > 0;
+    res.json({ exists });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ exists: false });
+  }
+});
+ 
+// Server-side route to check if the Special Order Number exists
+router.get('/check-special-order/:specialOrderNumber', validateSession, async function (req, res, next) {
+  try {
+    const { specialOrderNumber } = req.params;
+
+    // Query the database to check if the Special Order Number exists
+    const existingPersonnel = await prisma.personnel.findMany({
+      where: {
+        specialOrderNumber: specialOrderNumber,
+      },
+    });
+
+    const exists = existingPersonnel.length > 0;
+    res.json({ exists });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ exists: false });
+  }
+});
+
+
 
 module.exports = router;
