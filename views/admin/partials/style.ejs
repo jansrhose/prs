@@ -1,125 +1,126 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Record Table</title>
-  <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
-  <!-- Fontawesome CDN Link -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Record Table</title>
 
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Antonio&family=Lato:ital,wght@0,100;0,300;0,700;1,100;1,300;1,700&display=swap');
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <!-- Fontawesome CDN Link -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
-    * {
-      box-sizing: border-box;
-      font-family: "Antonio";
-      font-weight: bold;
-    }
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Antonio&family=Lato:ital,wght@0,100;0,300;0,700;1,100;1,300;1,700&display=swap');
 
-    body {
-      margin: 0;
-      background-color: #F7E1AE;
-    }
+      * {
+        box-sizing: border-box;
+        font-family: "Antonio";
+        font-weight: bold;
+      }
 
-    /* TOP NAVIGATION BAR */
-    .topnav {
-      background-color: #617A55;
-      display: flex;
-      padding: 14px 16px;
-    }
+      body {
+        margin: 0;
+        background-color: #F7E1AE;
+      }
 
-    /* HAMBURGER ICON */
-    .topnav .icon {
-      display: block;
-      color: white;
-      margin-top: 5px;
-    }
+      /* TOP NAVIGATION BAR */
+      .topnav {
+        background-color: #617A55;
+        display: flex;
+        padding: 14px 16px;
+      }
 
-    /* ADD RECORD AND PRINT MASTER LIST BUTTON */
-    .topnav .addpersonnel, .masterlist{
-        margin-left: 15px;
-    }
+      /* HAMBURGER ICON */
+      .topnav .icon {
+        display: block;
+        color: white;
+        margin-top: 5px;
+      }
 
-    .addpersonnel .btnaddmodal, .masterlist .btnmastermodal{
-        background-color: #FFF8D6;
-    }
+      /* ADD RECORD AND PRINT MASTER LIST BUTTON */
+      .topnav .addpersonnel, .masterlist{
+          margin-left: 15px;
+      }
 
-    .addpersonnel .btnaddmodal:hover, .btnmastermodal:hover{
-        background-color: #e6e0c2;
-    }
+      .addpersonnel .btnaddmodal, .masterlist .btnmastermodal{
+          background-color: #FFF8D6;
+      }
 
-    /* SEARCH BAR */
-    .search-container {
-        margin-left: auto;
-        width: 400px;
-    }
+      .addpersonnel .btnaddmodal:hover, .btnmastermodal:hover{
+          background-color: #e6e0c2;
+      }
 
-    /* SIDE NAVIGATION BAR */
-    .sidenav {
-      height: 100%;
-      width: 0;
-      position: fixed;
-      z-index: 1;
-      top: 0;
-      left: 0;
-      background-color: black;
-      overflow-x: hidden;
-      transition: 0.5s;
-      padding-top: 60px;
-    }
+      /* SEARCH BAR */
+      .search-container {
+          margin-left: auto;
+          width: 400px;
+      }
 
-    /* SIDE NAVBAR CLOSE BUTTON */
-    .sidenav .closebtn {
-      position: absolute;
-      top: 0;
-      left: 0;
-      padding: 14px 16px;
-      color: white;
-    }
+      /* SIDE NAVIGATION BAR */
+      .sidenav {
+        height: 100%;
+        width: 0;
+        position: fixed;
+        z-index: 1;
+        top: 0;
+        left: 0;
+        background-color: black;
+        overflow-x: hidden;
+        transition: 0.5s;
+        padding-top: 60px;
+      }
 
-    /* SIDE NAVBAR TITLE */
-    .sidenav .content h1 {
-      text-align: center;
-      color: #FFF8D6;
-    }
+      /* SIDE NAVBAR CLOSE BUTTON */
+      .sidenav .closebtn {
+        position: absolute;
+        top: 0;
+        left: 0;
+        padding: 14px 16px;
+        color: white;
+      }
 
-    /* SIDE NAVBAR LINKS */
-    .sidenav .side-links a {
-      position: relative;
-      padding: 8px 8px 8px 32px;
-      text-decoration: none;
-      font-size: 25px;
-      color: #FFF8D6;
-      display: block;
-      transition: 0.3s;
-      margin-top: 15px;
-    }
+      /* SIDE NAVBAR TITLE */
+      .sidenav .content h1 {
+        text-align: center;
+        color: #FFF8D6;
+      }
 
-    .sidenav .side-links a::before {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      height: 3px;
-      width: 25px;
-      background: #A4D0A4;
-      transition: width 0.3s ease;
-    }
+      /* SIDE NAVBAR LINKS */
+      .sidenav .side-links a {
+        position: relative;
+        padding: 8px 8px 8px 32px;
+        text-decoration: none;
+        font-size: 25px;
+        color: #FFF8D6;
+        display: block;
+        transition: 0.3s;
+        margin-top: 15px;
+      }
 
-    .sidenav .side-links a:hover::before {
-      color: #A4D0A4;
-      width: 100%;
-    }
+      .sidenav .side-links a::before {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        height: 3px;
+        width: 25px;
+        background: #A4D0A4;
+        transition: width 0.3s ease;
+      }
 
-    /* ACTIONS BUTTON */
-    .btn-fixed-width{
-        width: 120px;
-    }
+      .sidenav .side-links a:hover::before {
+        color: #A4D0A4;
+        width: 100%;
+      }
 
-    .line{
-      border: 1px solid;
-    }
-  </style>
-</head>
+      /* ACTIONS BUTTON */
+      .btn-fixed-width{
+          width: 120px;
+      }
+
+      /* EDIT FORM LINE */
+      .line{
+        border: 1px solid;
+      }
+    </style>
+  </head>

@@ -2,228 +2,318 @@
 <html>
 <head>
     <title><%= title %></title>
-    <!-- Add necessary CSS styles for the print view -->
+     <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     <style>
-        /* General styles */
-        body {
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
+        body{
+            margin-left: 1in;
+            margin-right: 1in;
+            margin-bottom: 1in;
+        }
+
+        /* HEADER */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            margin-bottom: 30px;
+        }
+
+        .header-title {
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            margin: 10px;
+        }
+
+        .header-text {
+            text-align: center;
+            margin: 0;
+        }
+
+        .header-text h1,
+        .header-text h2 {
+            font-weight: bold;
+            font-size: 12px;
             margin: 0;
             padding: 0;
-            background-color: white; /* Set background color to white for printing */
-            /* Add any other styles needed for printing */
-      
-        }
-          /* Create the background blur effect */
-          .blur-background {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: url("/path/to/your-background-image.jpg"); /* Replace with the actual background image URL */
-            background-size: cover;
-            filter: blur(8px); /* Adjust the blur intensity as needed */
-            z-index: -1;
         }
 
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
+        .header-logo-left img,
+        .header-logo-right img {
+            width: 115px;
+            height: 115px;
         }
 
-        /* Portrait view styles */
-        @media print and (orientation: portrait) {
-            .container {
-                padding: 10px;
+        .header-logo-left,
+        .header-logo-right {
+            display: flex;
+            justify-content: center;
+        }
+
+        /* Media Query for Landscape Orientation */
+        @media screen and (orientation: landscape) {
+            .header {
+                flex-direction: row;
+                align-items: center;
             }
 
-            .photo-container {
-                text-align: center;
-                margin-bottom: 15px;
+            .header-title {
+                flex-direction: row;
+                margin: 0;
+            }
+
+            .header-text {
+                margin: 0 10px;
             }
 
             .photo-container img {
-                width: 200px;
-                height: 200px;
-                object-fit: cover;
-                border: 1px solid #ccc;
-                border-radius: 50%;
-            }
-
-            .row {
-                margin-bottom: 10px;
-            }
-
-            .form-label {
-                font-weight: bold;
-                width: 140px;
-                display: inline-block;
-            }
-
-            .form-value {
-                display: inline-block;
-            }
-        }
-
-        /* Landscape view styles */
-        @media print and (orientation: landscape) {
-            .container {
-                padding: 20px;
-            }
-
-            .photo-container {
-                float: left;
-                margin-right: 20px;
-            }
-
-            .photo-container img {
-                width: 200px;
-                height: 200px;
+                width: 150px;
+                height: 150px;
                 object-fit: cover;
                 border: 1px solid #ccc;
                 border-radius: 5px;
             }
+        }
 
-            .row {
-                clear: both;
-                margin-bottom: 15px;
-            }
+        /* CONTAINER TITLE*/
+        .container-title {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
 
-            .form-label {
-                font-weight: bold;
-                width: 200px;
-                display: inline-block;
-                text-align: right;
-                padding-right: 15px;
-            }
+        .title h1 {
+            font-weight: bold;
+            font-size: 12px;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
 
-            .form-value {
-                display: inline-block;
-            }
+        .photo-container img {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .row{
+            margin-bottom: 5px;
         }
     </style>
 </head>
 <body>
-    <!-- Create the background blur overlay -->
-    <div class="blur-background"></div>
-    <!-- Print the personnel record details -->
-    <div class="container">
-        <h1 class="fs-5 text-center">PERSONNEL RECORD</h1>
-        <div class="photo-container">
-            <% if (personnel.photo) { %>
-                <img src="<%= '/personnel/photo/' + personnel.id %>" alt="Employee Photo">
-            <% } else { %>
-                <p>No Photo Available</p>
-            <% } %>
+    <!-- HEADER -->
+    <div class="header">
+        <!-- LEFT LOGO -->
+        <div class="header-logo-left">
+            <img src="/images/Logo1.png" alt="Left Logo" class="img-fluid">
         </div>
 
-        <!-- Personnel details -->
-        <div class="row">
-            <span class="form-label">Employee Number:</span>
-            <span class="form-value"><%= personnel.employeeNumber %></span>
+        <!-- HEADER TEXTS -->
+        <div class="header-title">
+            <div class="header-text">
+                <h2 class="text-center">Republic of the Philippines</h2>
+            </div>
+            <div class="header-text">
+                <h2 class="text-center">Department of Justice</h2>
+            </div>
+            <div class="header-text">
+                <h2 class="text-center">Bureau of Corrections</h2>
+            </div>
+            <div class="header-text">
+                <h1 class="text-center" style="color: darkolivegreen;">CORRECTIONAL INSTITUTION FOR WOMEN</h1>
+            </div>
+            <div class="header-text">
+                <h2 class="text-center">C.I.W Compound, 1550 Mandaluyong City</h2>
+            </div>
+            <div class="header-text">
+                <h2 class="text-center">ciw_mandaluyong@yahoo.com | ciwctos@bucor.gov.ph</h2>
+            </div>
+            <div class="header-text">
+                <h2 class="text-center">+63 (2) 8532-1736</h2>
+            </div>
+
         </div>
 
-        <div class="row">
-            <span class="form-label">Rank:</span>
-            <span class="form-value"><%= personnel.rank %></span>
+        <!-- RIGHT LOGO -->
+        <div class="header-logo-right">
+            <img src="/images/Logo2.png" alt="Right Logo" class="img-fluid">
         </div>
-
-        <div class="row">
-            <span class="form-label">First Name:</span>
-            <span class="form-value"><%= personnel.firstName %></span>
-        </div>
-
-        <div class="row">
-            <span class="form-label">Middle Name:</span>
-            <span class="form-value"><%= personnel.middleName %></span>
-        </div>
-
-        <div class="row">
-            <span class="form-label">Last Name:</span>
-            <span class="form-value"><%= personnel.lastName %></span>
-        </div>
-
-        <div class="row">
-            <span class="form-label">Gender:</span>
-            <span class="form-value"><%= personnel.gender %></span>
-        </div>
-
-        <div class="row">
-            <span class="form-label">Birthdate:</span>
-            <span class="form-value"><%= personnel.birthdate.toISOString().split('T')[0] %></span>
-        </div>
-
-        <div class="row">
-            <span class="form-label">Age:</span>
-            <span class="form-value"><%= personnel.age %></span>
-        </div>
-
-        <div class="row">
-            <span class="form-label">Contact:</span>
-            <span class="form-value"><%= personnel.mobileNumber %></span>
-        </div>
-
-        <div class="row">
-            <span class="form-label">Email:</span>
-            <span class="form-value"><%= personnel.emailAddress %></span>
-        </div>
-
-        <div class="row">
-            <span class="form-label">Address:</span>
-            <span class="form-value"><%= personnel.homeAddress %></span>
-        </div>
-
-        <div class="row">
-            <span class="form-label">Civil Status:</span>
-            <span class="form-value"><%= personnel.civilStatus %></span>
-        </div>
-
-        <div class="row">
-            <span class="form-label">Degree:</span>
-            <span class="form-value"><%= personnel.degree %></span>
-        </div>
-
-        <div class="row">
-            <span class="form-label">Special Order Number:</span>
-            <span class="form-value"><%= personnel.specialOrderNumber %></span>
-        </div>
-
-        <div class="row">
-            <span class="form-label">Entrance to Duty:</span>
-            <span class="form-value"><%= personnel.entranceToDutyDate ? personnel.entranceToDutyDate.toISOString().split('T')[0] : '' %></span>
-        </div>
-
-        <div class="row">
-            <span class="form-label">Assign to CIW:</span>
-            <span class="form-value"><%= personnel.assignToCIWDate ? personnel.assignToCIWDate.toISOString().split('T')[0] : '' %></span>
-        </div>
-
-        <div class="row">
-            <span class="form-label">Core Unit:</span>
-            <span class="form-value"><%= personnel.coreUnit %></span>
-        </div>
-
-        <div class="row">
-            <span class="form-label">Pre-Assigned:</span>
-            <span class="form-value"><%= personnel.preAssigned %></span>
-        </div>
-
-        <div class="row">
-            <span class="form-label">Concurrent:</span>
-            <span class="form-value"><%= personnel.concurrent %></span>
-        </div>
-
-        <div class="row">
-            <span class="form-label">Remarks:</span>
-            <span class="form-value"><%= personnel.remarks %></span>
-        </div>
-         
-
     </div>
+
+    <!-- TITLE -->
+    <div class="container-title">
+        <div class="title text-center">
+            <h1>PERSONNEL INFORMATION</h1>
+        </div>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="content">
+
+        <!-- FIRST ROW -->
+        <div class="row">
+            <!-- PHOTO -->
+            <div class="photo-container mb-3">
+                <% if (personnel.photo) { %>
+                    <img src="<%= '/personnel/photo/' + personnel.id %>" alt="Employee Photo">
+                <% } else { %>
+                    <p>No Photo Available</p>
+                <% } %>
+            </div>
+        </div>
+
+        <!-- SECOND ROW -->
+        <div class="row mb-5">
+            <!-- EMPLOYEE NUMBER -->
+            <div class="" style="font-size: 12px;">
+                <label for="employeeNumber" class="form-label" style="font-weight: bold;">Employee Number: </label>
+                <label class="form-label" id="employeeNumber"><%= personnel.employeeNumber %></label>
+            </div>
+
+            <!-- SPECIAL ORDER NUMBER -->
+            <div class="" style="font-size: 12px;">
+                <label for="specialOrderNumber" class="form-label" style="font-weight: bold;">BUCORDA Special Order Number: </label>
+                <label class="form-label" id="specialOrderNumber"><%= personnel.specialOrderNumber %></label>
+            </div>
+
+             <!-- RANK -->
+             <div class="" style="font-size: 12px;">
+                <label for="rank" class="form-label" style="font-weight: bold;">Rank: </label>
+                <label class="form-label" id="rank"><%= personnel.rank %></label>
+            </div>
+
+            <!-- CORE UNIT -->
+            <div class="" style="font-size: 12px;">
+                <label for="coreUnit" class="form-label" style="font-weight: bold;">Core Unit: </label>
+                <label class="form-label" id="coreUnit"><%= personnel.coreUnit %></label>
+            </div>
+
+            <!-- PRE ASSIGNED -->
+            <div class="" style="font-size: 12px;">
+            <label class="form-label" style="font-weight: bold;">Pre-Assigned: </label>
+            <label class="form-label" id="gender"><%= personnel.preAssigned %></label>
+            </div>
+        </div>
+
+        <!-- THIRD ROW -->
+        <div class="row">
+             <!-- FIRST NAME -->
+             <div class="col-sm-4" style="font-size: 12px;">
+                <label for="firstName" class="form-label" style="font-weight: bold;">First Name: </label>
+                <label class="form-label" id="firstName"><%= personnel.firstName %></label>
+            </div>
+
+            <!-- MIDDLE NAME -->
+            <div class="col-sm-4" style="font-size: 12px;">
+                <label for="middleName" class="form-label" style="font-weight: bold;">Middle Name: </label>
+                <label class="form-label" id="middleName"><%= personnel.middleName %></label>
+            </div>
+
+            <!-- LAST NAME -->
+            <div class="col-sm-4" style="font-size: 12px;">
+                <label for="lastName" class="form-label" style="font-weight: bold;">Last Name: </label>
+                <label class="form-label" id="lastName"><%= personnel.lastName %></label>
+            </div>
+        </div>
+
+        <!-- FOURTH ROW -->
+        <div class="row">
+            <!-- GENDER -->
+            <div class="col-sm-4" style="font-size: 12px;">
+               <label class="form-label" style="font-weight: bold;">Gender: </label>
+               <label class="form-label" id="gender"><%= personnel.gender %></label>
+           </div>
+   
+           <!-- BIRTHDATE -->
+           <div class="col-sm-4" style="font-size: 12px;">
+               <label for="birthdate" class="form-label" style="font-weight: bold;">Birthdate: </label>
+               <label class="form-label" id="birthdate"><%= personnel.birthdate.toISOString().split('T')[0] %></label>
+           </div>
+   
+           <!-- AGE -->
+           <div class="col-sm-4" style="font-size: 12px;">
+               <label for="age" class="form-label" style="font-weight: bold;">Age: </label>
+               <label class="form-label" id="age"><%= personnel.age %></label>
+           </div>
+       </div>
+   
+       <!-- FIFTH ROW -->
+       <div class="row">
+            <!-- MOBILE NUMBER -->
+            <div class="col-sm-4" style="font-size: 12px;">
+               <label for="mobileNumber" class="form-label" style="font-weight: bold;">Contact: </label>
+               <label class="form-label" id="mobileNumber"><%= personnel.mobileNumber %></label>
+           </div>
+   
+           <!-- EMAIL -->
+           <div class="col-sm-4" style="font-size: 12px;">
+               <label for="emailAddress" class="form-label" style="font-weight: bold;">Email: </label>
+               <label class="form-label" id="emailAddress"><%= personnel.emailAddress %></label>
+           </div>
+       </div>
+   
+       <!-- SIXTH ROW -->
+       <div class="row">
+           <!-- CIVIL STATUS -->
+           <div class="col-sm-4" style="font-size: 12px;">
+               <label for="civilStatus" class="form-label" style="font-weight: bold;">Civil Status: </label>
+               <label class="form-label" id="civilStatus"><%= personnel.civilStatus %></label>
+           </div>
+           
+           <!-- DEGREE -->
+           <div class="col-md-4" style="font-size: 12px;">
+               <label for="degree" class="form-label" style="font-weight: bold;">Degree: </label>
+               <label class="form-label" id="degree"><%= personnel.degree %></label>
+           </div>
+       </div>
+   
+       <!-- SEVENTH ROW-->
+       <div class="row mb-5">
+            <!-- ADDRESS -->
+            <div class="col-lg-8" style="font-size: 12px;">
+               <label for="homeAddress" class="form-label" style="font-weight: bold;">Address: </label>
+               <label class="form-label" id="homeAddress"><%= personnel.homeAddress %></label>
+           </div>
+       </div>
+   
+       <!-- EIGHTH ROW -->
+       <div class="row">
+             <!-- ENTRANCE TO DUTY -->
+             <div class="col-sm-4" style="font-size: 12px;">
+               <label for="entranceToDutyDate" class="form-label" style="font-weight: bold;">Entrance to Duty: </label>
+               <label class="form-label" id="entranceToDutyDate"><%= personnel.entranceToDutyDate ? personnel.entranceToDutyDate.toISOString().split('T')[0] : '' %></label>
+           </div>
+   
+           <!-- ASSIGN TO CIW -->
+           <div class="col-sm-4" style="font-size: 12px;">
+               <label for="assignToCIWDate" class="form-label" style="font-weight: bold;">Assign to CIW: </label>
+               <label class="form-label" id="assignToCIWDate"><%= personnel.assignToCIWDate ? personnel.assignToCIWDate.toISOString().split('T')[0] : '' %></label>
+           </div>
+       </div>
+   
+       <!-- NINETH ROW -->
+       <div class="row">
+            <!-- CONCURRENT -->
+            <div class="col-sm-4" style="font-size: 12px;">
+               <label for="concurrent" class="form-label" style="font-weight: bold;">Concurrent: </label>
+               <label class="form-label" id="concurrent"><%= personnel.concurrent %></label>
+           </div>
+   
+           <!-- REMARKS -->
+           <div class="col-sm-4" style="font-size: 12px;">
+               <label for="remarks" class="form-label" style="font-weight: bold;">Remarks: </label>
+               <label class="form-label" id="remarks"><%= personnel.remarks %></label>
+           </div>
+       </div>   
+    </div>
+
+    <!-- FUNCTION FOR PRINTING-->
     <script>
         // Automatically trigger the print dialog when the page is loaded
         window.onload = function() {
@@ -235,5 +325,8 @@
             window.close();
         });
     </script>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
 </body>
 </html>

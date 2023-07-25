@@ -2,10 +2,10 @@ const express = require('express');
 const router = express.Router();
 const { PrismaClient } = require("@prisma/client");
 const session = require('express-session');
-const threeDays = 3 * 24 * 60 * 60 * 1000; // 3 days in milliseconds
+const threeDays = 3 * 24 * 60 * 60 * 1000; // 3 DAYS IN MILLISECONDS
 const prisma = new PrismaClient();
 
-// Initialize the session middleware
+// INITIALIZE THE SESSION MIDDLEWARE
 router.use(session({
   secret: 'your-secret-key',
   resave: false,
@@ -15,7 +15,7 @@ router.use(session({
   }
 }));
 
-/* GET Login */
+// GET LOGIN 
 router.get('/', async function (req, res, next) {
   // Check if the admin or manager is logged in
   if (req.session.adminId) {
@@ -27,7 +27,7 @@ router.get('/', async function (req, res, next) {
   res.render('login', { title: 'Express' });
 });
 
-/* POST login */
+// POST LOGIN
 router.post('/', async function (req, res, next) {
   try {
     const { username, password } = req.body;
@@ -38,13 +38,13 @@ router.post('/', async function (req, res, next) {
 
     if (admin) {
       if (admin.password === password) {
-        // Admin login successful
-        req.session.adminId = admin.id; // Store admin ID in session
-        return res.redirect('/admin/records'); // Redirect to records.ejs
+        // ADMIN LOGIN SUCCESSFUL
+        req.session.adminId = admin.id; // STORE ADMIN ID IN SESSION
+        return res.redirect('/admin/records'); // REDIRECT TO RECORDS.EJS
       }
     }
 
-    // Incorrect username or password
+    // INCORRECT USERNAME OR PASSWORD (ERROR MESSAGE)
     return res.render('login', { error: 'Incorrect username or password' });
   } catch (error) {
     console.error(error);
@@ -52,8 +52,9 @@ router.post('/', async function (req, res, next) {
   }
 });
 
+// LOG OUT
 router.get('/admin/logout', function (req, res, next) {
-  // Clear admin ID from session
+  // CLEAR ADMIN ID FROM SESSION
   req.session.adminId = null;
   res.redirect('/');
 });

@@ -25,9 +25,6 @@
 
         </div>
 
-
-
-
         <!-- SEARCH BAR -->
         <div class="search-container">
             <form>
@@ -346,19 +343,10 @@
                                             <!-- PRINT BUTTON -->
                                             <div class="row mb-3">
                                                 <div class="col-md-12">
-                                                    <!-- <button type="submit" class="btn btn-primary" onclick="printRecord()">Print</button> -->
-                                                    <!-- PRINT BUTTON -->
                                                     <a href="/admin/records/print/<%= personnel.id %>" target="_blank" class="btn btn-primary mb-2 btn-fixed-width text-black">
                                                         <i class="fas fa-print fa-fw"></i> Print
                                                     </a>
                                                 </div>
-
-                                                <!-- <script>
-                                                    // Function to trigger the print dialog
-                                                    function printRecord() {
-                                                        window.print();
-                                                    }
-                                                </script> -->
                                             </div>
                                         </form>
                                     </div>
@@ -488,7 +476,6 @@
                                                 </div>
                                             </div>
                                             
-
                                             <!-- SIXTH ROW -->
                                             <div class="row mb-3">
                                                 <!-- MOBILE NUMBER FOR EDIT -->
@@ -542,9 +529,6 @@
                                                     // Add event listener to the edit mobile number input field for validation
                                                     editMobileNumberInput_<%= personnel.id %>.addEventListener('input', validateEditMobileNumberLength_<%= personnel.id %>);
                                                 </script>
-
-
-
 
                                                 <!-- EMAIL -->
                                                 <div class="col-md-4">

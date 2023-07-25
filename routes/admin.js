@@ -10,39 +10,39 @@ const flash = require('express-flash');
 const session = require('express-session');
 const cron = require('node-cron');
 
-// Add session middleware
+// ADD SESSION MIDDLEWARE
 router.use(session({
   secret: 'your-secret-key',
   resave: false,
   saveUninitialized: true
 }));
 
-// Use express-flash middleware
+// USE EXPRESS-FLASH MIDDLEWARE
 router.use(flash());
 
-// Middleware to validate user session
+// MIDDLEWARE TO VALIDATE USER SESSION
 function validateSession(req, res, next) {
   if (req.session.adminId) {
-    // User is logged in
+    // USER IS LOGGED IN
     next();
   } else {
-    // User is not logged in, redirect to login page
+    // USER IS NOT LOGGED IN, REDIRECT TO LOG IN PAGE
     res.redirect('/');
   }
 }
-// Schedule the yearly task to update the birthdates
+// SCHEDULE THE YEARLY TASK TO UPDATE THE AGE
 cron.schedule('0 0 1 1 *', async () => {
   try {
-    // Retrieve all personnel records from the database
+    // RETRIEVE ALL PERSONNEL RECORDS FROM THE DATABASE 
     const allPersonnel = await prisma.personnel.findMany();
 
-    // Update the birthdate for each personnel record
+    // UPDATE THE BIRTHDATE FOR EACH PERSONNEL RECORD
     for (const personnel of allPersonnel) {
       const currentYear = new Date().getFullYear();
       const birthdateWithoutYear = new Date(personnel.birthdate).toISOString().slice(5);
       const updatedBirthdate = new Date(`${currentYear}-${birthdateWithoutYear}`);
 
-      // Update the birthdate in the database
+      // UPDATE THE BIRTHDATE IN THE DATABASE
       await prisma.personnel.update({
         where: { id: personnel.id },
         data: { birthdate: updatedBirthdate },
@@ -53,14 +53,13 @@ cron.schedule('0 0 1 1 *', async () => {
   }
 });
 
-
-// Function to calculate age based on birthdate
+// FUNCTION TO CALCULATE AGE BASED ON BIRTHDATE
 function calculateAge(birthdate) {
   const birthdateDate = new Date(birthdate);
   const currentDate = new Date();
   const age = currentDate.getFullYear() - birthdateDate.getFullYear();
 
-  // Check if the birthday has occurred this year or not
+  // CHECK IF THE BIRTHDATE HAS OCCURED THIS YEAR OR NOT 
   const hasBirthdayOccurredThisYear =
     currentDate.getMonth() > birthdateDate.getMonth() ||
     (currentDate.getMonth() === birthdateDate.getMonth() && currentDate.getDate() >= birthdateDate.getDate());
@@ -68,8 +67,7 @@ function calculateAge(birthdate) {
   return hasBirthdayOccurredThisYear ? age : age - 1;
 }
 
-
-// Define the validation schema using Joi
+// DEFINE THE VALIDATION SCHEMA USING JOI
 const personnelSchema = Joi.object({
   id: Joi.string(),
   photo: Joi.string().allow(''),
@@ -95,7 +93,7 @@ const personnelSchema = Joi.object({
   remarks: Joi.string().allow(''),
 });
 
-// Serve personnel photos
+// SERVE PERSONNEL PHOTOS
 router.get('/personnel/photo/:id', async function (req, res, next) {
   try {
     const personnel = await prisma.personnel.findUnique({
@@ -117,7 +115,7 @@ router.get('/personnel/photo/:id', async function (req, res, next) {
   }
 });
 
-// GET personnel records
+// GET PERSONNEL RECORDS
 router.get('/admin/records', async function (req, res, next) {
   try {
     // Function to calculate age from birthdate
@@ -160,9 +158,7 @@ router.get('/admin/records', async function (req, res, next) {
   }
 });
 
-
-
-// POST add personnel record
+// POST ADD PERSONNEL RECORDS
 router.post('/admin/records', validateSession, upload, async function (req, res, next) {
   try {
     // Validate the request body against the defined schema
@@ -231,7 +227,7 @@ router.post('/admin/records', validateSession, upload, async function (req, res,
   }
 });
 
-// POST update personnel record
+// POST UPDATE PERSONNEL RECORDS
 router.post('/admin/records/:id', upload, async function (req, res, next) {
   try {
     const personnelId = req.params.id;
@@ -318,7 +314,7 @@ router.post('/admin/records/:id', upload, async function (req, res, next) {
   }
 });
 
-// DELETE personnel record
+// DELETE PERSONNEL RECORDS
 router.post('/admin/records/delete/:id', validateSession, async (req, res, next) => {
   try {
     const personnelId = req.params.id; // Extract personnelId from the URL parameter
@@ -349,7 +345,7 @@ router.post('/admin/records/delete/:id', validateSession, async (req, res, next)
   }
 });
 
-// Server-side route to check if the employee number exists
+// SERVER-SIDE ROUTE TO CHECK IF THE EMPLOYEE NUMBER EXISTS 
 router.get('/check-employee-number/:employeeNumber', validateSession, async function (req, res, next) {
   try {
     const { employeeNumber } = req.params;
@@ -369,7 +365,7 @@ router.get('/check-employee-number/:employeeNumber', validateSession, async func
   }
 });
  
-// Server-side route to check if the Special Order Number exists
+// SERVER-SIDE ROUTE TO CHECK IF THE sPECIAL ORDER NUMBER EXISTS
 router.get('/check-special-order/:specialOrderNumber', async function (req, res, next) {
   try {
     const { specialOrderNumber } = req.params;
@@ -389,7 +385,7 @@ router.get('/check-special-order/:specialOrderNumber', async function (req, res,
   }
 });
  
-// Define a new route for the print view
+// DEFINE A NEW ROUTE FOR THE PRINT VIEW
 router.get('/admin/records/print/:id', async function (req, res, next) {
   try {
     const personnelId = req.params.id;
@@ -412,13 +408,13 @@ router.get('/admin/records/print/:id', async function (req, res, next) {
   }
 });
 
-// GET master list for printing
+// GET MASTER LIST FOR PRINTING 
 router.get('/admin/masterlist', async function (req, res, next) {
   try {
-    // Retrieve all personnel records from the database
+    // RETRIEVE ALL PERSONNEL RECORDS FROM THE DATABASE
     const allPersonnel = await prisma.personnel.findMany();
 
-    // Filter out personnel records that are not transferred (preAssigned is not "Transfer")
+    // FILTER OUT PERSONNEL RECORDS THAT ARE NOT "NOT TRANSFER" (preAssigned is not "Transfer")
     const notTransferredPersonnels = allPersonnel.filter(
       (personnel) => personnel.preAssigned !== "Transfer"
     );

@@ -10,12 +10,14 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// TABLE ADMIN
 model Admin {
   id                  String          @id @default(cuid()) @map("_id")
   username            String          @unique
   password            String
 }
 
+// TABLE PERSONNEL
 model Personnel {
   id                  String          @id @default(cuid()) @map("_id")
   photo               Bytes

@@ -1,19 +1,79 @@
-<!-- views/admin/masterlist.ejs -->
 <!DOCTYPE html>
 <html>
 <head>
     <title>Master List</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    
     <style>
         body {
-            background-color: rgba(0, 0, 0, 0.3); /* Apply a semi-transparent background to blur the content */
+          margin-left: 1in;
+          margin-right: 1in;
+          margin-bottom: 1in;
         }
 
-        .masterlist-container {
-            background-color: #fff; /* Set a white background for the content container */
-            padding: 20px;
-            border-radius: 5px;
-            max-width: 600px;
-            margin: 50px auto; 
+        /* HEADER */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            margin-bottom: 30px;
+        }
+
+        .header-title {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        margin: 10px;
+        }
+
+        .header-text {
+        text-align: center;
+        margin: 0;
+        }
+
+        .header-text h1,
+        .header-text h2 {
+        font-weight: bold;
+        font-size: 12px;
+        color: #000; /* Change text color to your preference */
+        margin: 0;
+        padding: 0;
+        }
+
+        /* HEADER LOGO */ 
+        .header-logo-left img,
+        .header-logo-right img {
+        width: 115px;
+        height: 115px;
+        }
+
+        .header-logo-left,
+        .header-logo-right {
+        display: flex;
+        justify-content: center;
+        }
+
+        /* CONTAINER TITLE */ 
+        .container-title {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .title h1 {
+            font-weight: bold;
+            font-size: 12px;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* CONTENT */ 
+        .masterlist-container{
+            font-size: 12px;
         }
 
         h1 {
@@ -31,8 +91,53 @@
     </style>
 </head>
 <body>
+    <!-- HEADER -->
+    <div class="header">
+        <!-- LEFT LOGO -->
+        <div class="header-logo-left">
+            <img src="/images/Logo1.png" alt="Left Logo" class="img-fluid">
+        </div>
+
+        <!-- HEADER TEXT -->
+        <div class="header-title">
+            <div class="header-text">
+                <h2 class="text-center">Republic of the Philippines</h2>
+            </div>
+            <div class="header-text">
+                <h2 class="text-center">Department of Justice</h2>
+            </div>
+            <div class="header-text">
+                <h2 class="text-center">Bureau of Corrections</h2>
+            </div>
+            <div class="header-text">
+                <h1 class="text-center" style="color: darkolivegreen;">CORRECTIONAL INSTITUTION FOR WOMEN</h1>
+            </div>
+            <div class="header-text">
+                <h2 class="text-center">C.I.W Compound, 1550 Mandaluyong City</h2>
+            </div>
+            <div class="header-text">
+                <h2 class="text-center">ciw_mandaluyong@yahoo.com | ciwctos@bucor.gov.ph</h2>
+            </div>
+            <div class="header-text">
+                <h2 class="text-center">+63 (2) 8532-1736</h2>
+            </div>
+        </div>
+
+        <!-- RIGHT LOGO -->
+        <div class="header-logo-right">
+            <img src="/images/Logo2.png" alt="Right Logo" class="img-fluid">
+        </div>
+    </div>
+
+    <!-- TITLE -->
+    <div class="container-title">
+        <div class="title text-center">
+            <h1>MASTER LIST</h1>
+        </div>
+    </div>
+
+    <!-- CONTENT -->
     <div class="masterlist-container">
-        <h1>Master List</h1>
         <ol>
             <% let count = 1; %>
             <% for (const personnel of personnels) { %>
@@ -42,6 +147,7 @@
         </ol>
     </div>
 
+    <!-- FUNCTION FOR PRINT -->
     <script>
         // Function to trigger the print dialog automatically when the page loads
         function printPage() {
@@ -58,5 +164,8 @@
             window.close();
         });
     </script>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
 </body>
 </html>
