@@ -102,7 +102,7 @@ router.get('/personnel/photo/:id', async function (req, res, next) {
 });
 
 // GET personnel records
-router.get('/admin/records', validateSession, async function (req, res, next) {
+router.get('/admin/records', async function (req, res, next) {
   try {
     const personnels = await prisma.personnel.findMany();
 
@@ -183,7 +183,7 @@ router.post('/admin/records', validateSession, upload, async function (req, res,
 });
 
 // POST update personnel record
-router.post('/admin/records/:id', validateSession, upload, async function (req, res, next) {
+router.post('/admin/records/:id', upload, async function (req, res, next) {
   try {
     const personnelId = req.params.id;
 
@@ -321,7 +321,7 @@ router.get('/check-employee-number/:employeeNumber', validateSession, async func
 });
  
 // Server-side route to check if the Special Order Number exists
-router.get('/check-special-order/:specialOrderNumber', validateSession, async function (req, res, next) {
+router.get('/check-special-order/:specialOrderNumber', async function (req, res, next) {
   try {
     const { specialOrderNumber } = req.params;
 

@@ -379,7 +379,7 @@
                                             <div class="row mb-3">
                                                 <!-- ID PICTURE -->
                                                 <div class="col-md-4">
-                                                    <input type="file" class="form-control" id="photo" name="photo" accept="image/*">
+                                                    <input type="file" class="form-control" id="photo" name="photo" accept="image/*" style="display: none;" readonly>
                                                     <img id="previewPhoto" src="<%= personnel.photo ? '/personnel/photo/' + personnel.id : '' %>" alt="Uploaded Photo" style="max-width: 100%; max-height: 200px; margin-top: 10px; <% if (!personnel.photo) { %>display: none;<% } %>">
                                                 </div>
                                             </div>
@@ -424,10 +424,7 @@
                                                 <div class="col-md-4">
                                                     <label class="form-label">Gender: </label>
                                                     <!-- <label class="form-label" id="gender"><%= personnel.gender %></label> -->
-                                                    <select class="form-select" id="gender" name="gender" required>
-                                                        <option value="Male" <% if (personnel.gender === "Male") { %>selected<% } %>>Male</option>
-                                                        <option value="Female" <% if (personnel.gender === "Female") { %>selected<% } %>>Female</option>
-                                                    </select>
+                                                    <input type="text" class="form-control" id="gender" name="gender" value="<%= personnel.gender %>" readonly>
                                                 </div>
 
                                                 <!-- BIRTHDATE -->
@@ -485,11 +482,60 @@
 
                                             <!-- SIXTH ROW -->
                                             <div class="row mb-3">
-                                                <!-- MOBILE NUMBER -->
+                                                <!-- MOBILE NUMBER FOR EDIT -->
                                                 <div class="col-md-4">
-                                                    <label for="mobileNumber" class="form-label">Contact</label>
-                                                    <input type="text" class="form-control" id="mobileNumber" name="mobileNumber" value="<%= personnel.mobileNumber %>">
+                                                    <label for="editMobileNumber_<%= personnel.id %>" class="form-label">Contact</label>
+                                                    <input type="text" class="form-control" id="editMobileNumber_<%= personnel.id %>" name="mobileNumber" value="<%= personnel.mobileNumber %>" maxlength="13" required>
+                                                    <span id="editMobileNumberError_<%= personnel.id %>" class="form-text text-danger"></span>
                                                 </div>
+
+                                                <!--Script for formatting and validation in edit-->
+                                                <script>
+                                                    function formatEditMobileNumber_<%= personnel.id %>() {
+                                                        const editMobileNumberInput = document.getElementById('editMobileNumber_<%= personnel.id %>');
+                                                        let formattedValue = editMobileNumberInput.value.replace(/\D/g, ''); // Remove non-numeric characters
+
+                                                        if (formattedValue.length > 11) {
+                                                            formattedValue = formattedValue.slice(0, 11); // Trim to 11 digits
+                                                        }
+
+                                                        // Insert the hyphens for formatting
+                                                        if (formattedValue.length > 7) {
+                                                            formattedValue = formattedValue.replace(/^(\d{4})(\d{3})(\d{4})$/, '$1-$2-$3');
+                                                        } else if (formattedValue.length > 3) {
+                                                            formattedValue = formattedValue.replace(/^(\d{4})(\d{3})$/, '$1-$2');
+                                                        }
+
+                                                        editMobileNumberInput.value = formattedValue;
+                                                    }
+
+                                                    // Add event listener to the edit mobile number input field for formatting
+                                                    const editMobileNumberInput_<%= personnel.id %> = document.getElementById('editMobileNumber_<%= personnel.id %>');
+                                                    editMobileNumberInput_<%= personnel.id %>.addEventListener('input', formatEditMobileNumber_<%= personnel.id %>);
+
+                                                    // Function to validate the edit mobile number length
+                                                    function validateEditMobileNumberLength_<%= personnel.id %>() {
+                                                        const editMobileNumberInput = document.getElementById('editMobileNumber_<%= personnel.id %>');
+                                                        const editMobileNumberError = document.getElementById('editMobileNumberError_<%= personnel.id %>');
+                                                        const editMobileNumber = editMobileNumberInput.value.replace(/\D/g, ''); // Remove non-numeric characters
+                                                        const isValid = editMobileNumber.length === 11;
+
+                                                        if (!isValid) {
+                                                            editMobileNumberError.textContent = "Contact Number should be 11 digits";
+                                                        } else {
+                                                            editMobileNumberError.textContent = ""; // Clear the error message if valid
+                                                        }
+
+                                                        // Disable further input if 11 digits have been entered
+                                                        editMobileNumberInput.maxLength = isValid ? 13 : 11;
+                                                    }
+
+                                                    // Add event listener to the edit mobile number input field for validation
+                                                    editMobileNumberInput_<%= personnel.id %>.addEventListener('input', validateEditMobileNumberLength_<%= personnel.id %>);
+                                                </script>
+
+
+
 
                                                 <!-- EMAIL -->
                                                 <div class="col-md-4">
@@ -532,9 +578,57 @@
 
                                                 <!-- SPECIAL ORDER NUMBER -->
                                                 <div class="col-md-4">
-                                                    <label for="specialOrderNumber" class="form-label">Special Order Number</label>
-                                                    <input type="text" class="form-control" id="specialOrderNumber" name="specialOrderNumber" value="<%= personnel.specialOrderNumber %>">
+                                                    <label for="editSpecialOrderNumber_<%= personnel.id %>" class="form-label">Special Order Number</label>
+                                                    <input type="text" class="form-control" id="editSpecialOrderNumber_<%= personnel.id %>" name="specialOrderNumber" value="<%= personnel.specialOrderNumber %>" pattern="[A-Za-z0-9]{4}-[A-Za-z0-9]{4}" required>
+                                                    <span id="editSpecialOrderNumberError_<%= personnel.id %>" style="color: red; display: none;">Special Order Number already exists!</span>                                        
                                                 </div>
+                                                
+                                                 <!--Script for handling format and change event for special order number in edit-->
+                                                <script>
+                                                    function formatEditSpecialOrderNumber_<%= personnel.id %>() {
+                                                        const editSpecialOrderNumberInput = document.getElementById('editSpecialOrderNumber_<%= personnel.id %>');
+                                                        let formattedValue = editSpecialOrderNumberInput.value.replace(/\D/g, '');
+                                                        if (formattedValue.length > 8) {
+                                                            formattedValue = formattedValue.slice(0, 8);
+                                                        }
+                                                        formattedValue = formattedValue.replace(/(\d{4})(\d{4})/, '$1-$2');
+                                                        editSpecialOrderNumberInput.value = formattedValue;
+                                                    }
+
+                                                    // Function to check if the Special Order Number already exists in the database
+                                                    async function checkEditSpecialOrderNumberExists_<%= personnel.id %>(inputValue) {
+                                                        try {
+                                                            const response = await fetch(`/check-special-order/${inputValue}`);
+                                                            const data = await response.json();
+                                                            return data.exists;
+                                                        } catch (error) {
+                                                            console.error(error);
+                                                            return false;
+                                                        }
+                                                    }
+
+                                                    async function handleEditSpecialOrderNumberChange_<%= personnel.id %>() {
+                                                        const editSpecialOrderNumberInput = document.getElementById('editSpecialOrderNumber_<%= personnel.id %>');
+                                                        const editSpecialOrderNumberError = document.getElementById('editSpecialOrderNumberError_<%= personnel.id %>');
+
+                                                        // Check if the Special Order Number already exists
+                                                        const inputValue = editSpecialOrderNumberInput.value;
+                                                        const specialOrderNumberExists = await checkEditSpecialOrderNumberExists_<%= personnel.id %>(inputValue);
+
+                                                        if (specialOrderNumberExists) {
+                                                            editSpecialOrderNumberInput.classList.add('is-invalid');
+                                                            editSpecialOrderNumberError.style.display = 'block';
+                                                        } else {
+                                                            editSpecialOrderNumberInput.classList.remove('is-invalid');
+                                                            editSpecialOrderNumberError.style.display = 'none';
+                                                        }
+                                                    }
+
+                                                    const editSpecialOrderNumberInput_<%= personnel.id %> = document.getElementById('editSpecialOrderNumber_<%= personnel.id %>');
+                                                    editSpecialOrderNumberInput_<%= personnel.id %>.addEventListener('input', formatEditSpecialOrderNumber_<%= personnel.id %>);
+                                                    editSpecialOrderNumberInput_<%= personnel.id %>.addEventListener('change', handleEditSpecialOrderNumberChange_<%= personnel.id %>);
+                                                </script>
+
                                             </div>
 
                                             <!-- EIGHTH ROW -->
