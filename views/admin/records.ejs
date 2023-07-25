@@ -379,6 +379,7 @@
                                             <div class="row mb-3">
                                                 <!-- ID PICTURE -->
                                                 <div class="col-md-4">
+                                                    <input type="file" class="form-control" id="photo" name="photo" accept="image/*">
                                                     <img id="previewPhoto" src="<%= personnel.photo ? '/personnel/photo/' + personnel.id : '' %>" alt="Uploaded Photo" style="max-width: 100%; max-height: 200px; margin-top: 10px; <% if (!personnel.photo) { %>display: none;<% } %>">
                                                 </div>
                                             </div>
@@ -388,7 +389,8 @@
                                                 <!-- EMPLOYEE NUMBER -->
                                                 <div class="col-md-4">
                                                     <label for="employeeNumber" class="form-label">Employee Number: </label>
-                                                    <label class="form-label" id="employeeNumber"><%= personnel.employeeNumber %></label>
+                                                    <!-- <label class="form-label" id="employeeNumber"><%= personnel.employeeNumber %></label> -->
+                                                    <input type="text" class="form-control" id="employeeNumber" name="employeeNumber" value="<%= personnel.employeeNumber %>" readonly>
                                                 </div>
                                             </div>
 
@@ -397,19 +399,22 @@
                                                 <!-- FIRST NAME -->
                                                 <div class="col-md-4">
                                                     <label for="firstName" class="form-label">First Name: </label>
-                                                    <label class="form-label" id="firstName"><%= personnel.firstName %></label>
+                                                    <!-- <label class="form-label" id="firstName"><%= personnel.firstName %></label> -->
+                                                    <input type="text" class="form-control" id="firstName" name="firstName" value="<%= personnel.firstName %>" readonly>
                                                 </div>
 
                                                 <!-- MIDDLE NAME -->
                                                 <div class="col-md-4">
                                                     <label for="middleName" class="form-label">Middle Name: </label>
-                                                    <label class="form-label" id="middleName"><%= personnel.middleName %></label>
+                                                    <!-- <label class="form-label" id="middleName"><%= personnel.middleName %></label> -->
+                                                    <input type="text" class="form-control" id="middleName" name="middleName" value="<%= personnel.middleName %>" readonly>
                                                 </div>
 
                                                 <!-- LAST NAME -->
                                                 <div class="col-md-4">
                                                     <label for="lastName" class="form-label">Last Name: </label>
-                                                    <label class="form-label" id="lastName"><%= personnel.lastName %></label>
+                                                    <!-- <label class="form-label" id="lastName"><%= personnel.lastName %></label> -->
+                                                    <input type="text" class="form-control" id="lastName" name="lastName" value="<%= personnel.lastName %>" readonly>
                                                 </div>
                                             </div>
 
@@ -418,19 +423,25 @@
                                                 <!-- GENDER -->
                                                 <div class="col-md-4">
                                                     <label class="form-label">Gender: </label>
-                                                    <label class="form-label" id="gender"><%= personnel.gender %></label>
+                                                    <!-- <label class="form-label" id="gender"><%= personnel.gender %></label> -->
+                                                    <select class="form-select" id="gender" name="gender" required>
+                                                        <option value="Male" <% if (personnel.gender === "Male") { %>selected<% } %>>Male</option>
+                                                        <option value="Female" <% if (personnel.gender === "Female") { %>selected<% } %>>Female</option>
+                                                    </select>
                                                 </div>
 
                                                 <!-- BIRTHDATE -->
                                                 <div class="col-md-4">
                                                     <label for="birthdate" class="form-label">Birthdate: </label>
-                                                    <label class="form-label" id="birthdate"><%= personnel.birthdate.toISOString().split('T')[0] %></label>
+                                                    <!-- <label class="form-label" id="birthdate"><%= personnel.birthdate.toISOString().split('T')[0] %></label> -->
+                                                    <input type="date" class="form-control" id="birthdate" name="birthdate" value="<%= personnel.birthdate.toISOString().split('T')[0] %>" readonly>
                                                 </div>
 
                                                 <!-- AGE -->
                                                 <div class="col-md-4">
                                                     <label for="age" class="form-label">Age: </label>
-                                                    <label class="form-label" id="age"><%= personnel.age %></label>
+                                                    <!-- <label class="form-label" id="age"><%= personnel.age %></label> -->
+                                                    <input type="number" class="form-control" id="age" name="age" value="<%= personnel.age %>" readonly>
                                                 </div>
                                             </div>
 

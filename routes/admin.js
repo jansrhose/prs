@@ -53,8 +53,6 @@ cron.schedule('0 0 1 1 *', async () => {
   }
 });
 
-
-
 // Define the validation schema using Joi
 const personnelSchema = Joi.object({
   id: Joi.string(),
@@ -114,8 +112,6 @@ router.get('/admin/records', validateSession, async function (req, res, next) {
     res.status(500).send('Internal Server Error');
   }
 });
-
-
 
 // POST add personnel record
 router.post('/admin/records', validateSession, upload, async function (req, res, next) {
@@ -273,8 +269,6 @@ router.post('/admin/records/:id', validateSession, upload, async function (req, 
   }
 });
 
-
-
 // DELETE personnel record
 router.post('/admin/records/delete/:id', validateSession, async (req, res, next) => {
   try {
@@ -345,7 +339,5 @@ router.get('/check-special-order/:specialOrderNumber', validateSession, async fu
     res.status(500).json({ exists: false });
   }
 });
-
-
 
 module.exports = router;
