@@ -16,12 +16,17 @@
 
         <%- include('modals/addmodal') %>
 
-        <!-- PRINT MASTER LIST TRIGGER BUTTON -->
+        <!-- PRINT MASTER LIST TRIGGER BUTTON --> 
         <div class="masterlist">
-            <a class="btn btnmastermodal btn-fixed-width" id="btnmastermodal" data-bs-toggle="" data-bs-target="">
+            <!-- Use an anchor tag to open the master list in a new window -->
+            <a href="/admin/masterlist" target="_blank" class="btn btnmastermodal btn-fixed-width">
                 <i class="fas fa-print"></i> Print List
             </a>
+
         </div>
+
+
+
 
         <!-- SEARCH BAR -->
         <div class="search-container">
@@ -341,15 +346,19 @@
                                             <!-- PRINT BUTTON -->
                                             <div class="row mb-3">
                                                 <div class="col-md-12">
-                                                    <button type="submit" class="btn btn-primary" onclick="printRecord()">Print</button>
+                                                    <!-- <button type="submit" class="btn btn-primary" onclick="printRecord()">Print</button> -->
+                                                    <!-- PRINT BUTTON -->
+                                                    <a href="/admin/records/print/<%= personnel.id %>" target="_blank" class="btn btn-primary mb-2 btn-fixed-width text-black">
+                                                        <i class="fas fa-print fa-fw"></i> Print
+                                                    </a>
                                                 </div>
 
-                                                <script>
+                                                <!-- <script>
                                                     // Function to trigger the print dialog
                                                     function printRecord() {
                                                         window.print();
                                                     }
-                                                </script>
+                                                </script> -->
                                             </div>
                                         </form>
                                     </div>
@@ -563,18 +572,13 @@
                                                         <option value="Divorced" <% if (personnel.civilStatus === "Divorced") { %>selected<% } %>>Divorced</option>
                                                         <option value="Widowed" <% if (personnel.civilStatus === "Widowed") { %>selected<% } %>>Widowed</option>
                                                     </select>
-                                                </div>
-
+                                                </div> 
+                                                    
                                                 <!-- DEGREE -->
                                                 <div class="col-md-4">
                                                     <label for="degree" class="form-label">Degree</label>
-                                                    <select class="form-select" id="degree" name="degree">
-                                                        <option value="" selected disabled>Select Degree</option>
-                                                        <option value="Bachelor" <% if (personnel.degree === "Bachelor") { %>selected<% } %>>Bachelor</option>
-                                                        <option value="Master" <% if (personnel.degree === "Master") { %>selected<% } %>>Master</option>
-                                                        <!-- Add more degrees as needed -->
-                                                    </select>
-                                                </div>
+                                                    <input type="text" class="form-control" id="degreeInput" name="degree" placeholder="Enter Degree" value="<%= personnel.degree %>" required>
+                                                </div>  
 
                                                 <!-- SPECIAL ORDER NUMBER -->
                                                 <div class="col-md-4">
@@ -582,7 +586,7 @@
                                                     <input type="text" class="form-control" id="editSpecialOrderNumber_<%= personnel.id %>" name="specialOrderNumber" value="<%= personnel.specialOrderNumber %>" pattern="[A-Za-z0-9]{4}-[A-Za-z0-9]{4}" required>
                                                     <span id="editSpecialOrderNumberError_<%= personnel.id %>" style="color: red; display: none;">Special Order Number already exists!</span>                                        
                                                 </div>
-                                                
+
                                                  <!--Script for handling format and change event for special order number in edit-->
                                                 <script>
                                                     function formatEditSpecialOrderNumber_<%= personnel.id %>() {

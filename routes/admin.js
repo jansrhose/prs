@@ -53,6 +53,22 @@ cron.schedule('0 0 1 1 *', async () => {
   }
 });
 
+
+// Function to calculate age based on birthdate
+function calculateAge(birthdate) {
+  const birthdateDate = new Date(birthdate);
+  const currentDate = new Date();
+  const age = currentDate.getFullYear() - birthdateDate.getFullYear();
+
+  // Check if the birthday has occurred this year or not
+  const hasBirthdayOccurredThisYear =
+    currentDate.getMonth() > birthdateDate.getMonth() ||
+    (currentDate.getMonth() === birthdateDate.getMonth() && currentDate.getDate() >= birthdateDate.getDate());
+
+  return hasBirthdayOccurredThisYear ? age : age - 1;
+}
+
+
 // Define the validation schema using Joi
 const personnelSchema = Joi.object({
   id: Joi.string(),
@@ -104,6 +120,37 @@ router.get('/personnel/photo/:id', async function (req, res, next) {
 // GET personnel records
 router.get('/admin/records', async function (req, res, next) {
   try {
+    // Function to calculate age from birthdate
+    function calculateAge(birthdate) {
+      const birthdateDate = new Date(birthdate);
+      const now = new Date();
+
+      let ageYears = now.getFullYear() - birthdateDate.getFullYear();
+      let ageMonths = now.getMonth() - birthdateDate.getMonth();
+      let ageDays = now.getDate() - birthdateDate.getDate();
+
+      if (ageMonths < 0 || (ageMonths === 0 && ageDays < 0)) {
+        ageYears--;
+      }
+
+      return ageYears;
+    }
+
+    // Retrieve all personnel records from the database
+    const allPersonnel = await prisma.personnel.findMany();
+
+    // Update the age for each personnel record
+    for (const personnel of allPersonnel) {
+      const age = calculateAge(personnel.birthdate);
+
+      // Update the age in the database
+      await prisma.personnel.update({
+        where: { id: personnel.id },
+        data: { age: age },
+      });
+    }
+
+    // Fetch the personnel records with updated ages
     const personnels = await prisma.personnel.findMany();
 
     res.render('admin/records', { title: 'Express', personnels });
@@ -112,6 +159,8 @@ router.get('/admin/records', async function (req, res, next) {
     res.status(500).send('Internal Server Error');
   }
 });
+
+
 
 // POST add personnel record
 router.post('/admin/records', validateSession, upload, async function (req, res, next) {
@@ -337,6 +386,47 @@ router.get('/check-special-order/:specialOrderNumber', async function (req, res,
   } catch (error) {
     console.error(error);
     res.status(500).json({ exists: false });
+  }
+});
+ 
+// Define a new route for the print view
+router.get('/admin/records/print/:id', async function (req, res, next) {
+  try {
+    const personnelId = req.params.id;
+
+    // Retrieve the personnel record from the database
+    const personnel = await prisma.personnel.findUnique({
+      where: { id: personnelId },
+    });
+
+    if (!personnel) {
+      // If personnel not found, redirect back to the main records page
+      return res.redirect('/admin/records');
+    }
+
+    // Render the print view template with the personnel data
+    res.render('admin/print', { title: 'Print Record', personnel });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+// GET master list for printing
+router.get('/admin/masterlist', async function (req, res, next) {
+  try {
+    // Retrieve all personnel records from the database
+    const allPersonnel = await prisma.personnel.findMany();
+
+    // Filter out personnel records that are not transferred (preAssigned is not "Transfer")
+    const notTransferredPersonnels = allPersonnel.filter(
+      (personnel) => personnel.preAssigned !== "Transfer"
+    );
+
+    res.render('admin/masterlist', { title: 'Master List', personnels: notTransferredPersonnels });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
   }
 });
 

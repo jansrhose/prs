@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%= title %></title>
+    <!-- Add necessary CSS styles for the print view -->
+    <style>
+        /* General styles */
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: white; /* Set background color to white for printing */
+            /* Add any other styles needed for printing */
+      
+        }
+          /* Create the background blur effect */
+          .blur-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("/path/to/your-background-image.jpg"); /* Replace with the actual background image URL */
+            background-size: cover;
+            filter: blur(8px); /* Adjust the blur intensity as needed */
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        /* Portrait view styles */
+        @media print and (orientation: portrait) {
+            .container {
+                padding: 10px;
+            }
+
+            .photo-container {
+                text-align: center;
+                margin-bottom: 15px;
+            }
+
+            .photo-container img {
+                width: 200px;
+                height: 200px;
+                object-fit: cover;
+                border: 1px solid #ccc;
+                border-radius: 50%;
+            }
+
+            .row {
+                margin-bottom: 10px;
+            }
+
+            .form-label {
+                font-weight: bold;
+                width: 140px;
+                display: inline-block;
+            }
+
+            .form-value {
+                display: inline-block;
+            }
+        }
+
+        /* Landscape view styles */
+        @media print and (orientation: landscape) {
+            .container {
+                padding: 20px;
+            }
+
+            .photo-container {
+                float: left;
+                margin-right: 20px;
+            }
+
+            .photo-container img {
+                width: 200px;
+                height: 200px;
+                object-fit: cover;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+            }
+
+            .row {
+                clear: both;
+                margin-bottom: 15px;
+            }
+
+            .form-label {
+                font-weight: bold;
+                width: 200px;
+                display: inline-block;
+                text-align: right;
+                padding-right: 15px;
+            }
+
+            .form-value {
+                display: inline-block;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Create the background blur overlay -->
+    <div class="blur-background"></div>
+    <!-- Print the personnel record details -->
+    <div class="container">
+        <h1 class="fs-5 text-center">PERSONNEL RECORD</h1>
+        <div class="photo-container">
+            <% if (personnel.photo) { %>
+                <img src="<%= '/personnel/photo/' + personnel.id %>" alt="Employee Photo">
+            <% } else { %>
+                <p>No Photo Available</p>
+            <% } %>
+        </div>
+
+        <!-- Personnel details -->
+        <div class="row">
+            <span class="form-label">Employee Number:</span>
+            <span class="form-value"><%= personnel.employeeNumber %></span>
+        </div>
+
+        <div class="row">
+            <span class="form-label">Rank:</span>
+            <span class="form-value"><%= personnel.rank %></span>
+        </div>
+
+        <div class="row">
+            <span class="form-label">First Name:</span>
+            <span class="form-value"><%= personnel.firstName %></span>
+        </div>
+
+        <div class="row">
+            <span class="form-label">Middle Name:</span>
+            <span class="form-value"><%= personnel.middleName %></span>
+        </div>
+
+        <div class="row">
+            <span class="form-label">Last Name:</span>
+            <span class="form-value"><%= personnel.lastName %></span>
+        </div>
+
+        <div class="row">
+            <span class="form-label">Gender:</span>
+            <span class="form-value"><%= personnel.gender %></span>
+        </div>
+
+        <div class="row">
+            <span class="form-label">Birthdate:</span>
+            <span class="form-value"><%= personnel.birthdate.toISOString().split('T')[0] %></span>
+        </div>
+
+        <div class="row">
+            <span class="form-label">Age:</span>
+            <span class="form-value"><%= personnel.age %></span>
+        </div>
+
+        <div class="row">
+            <span class="form-label">Contact:</span>
+            <span class="form-value"><%= personnel.mobileNumber %></span>
+        </div>
+
+        <div class="row">
+            <span class="form-label">Email:</span>
+            <span class="form-value"><%= personnel.emailAddress %></span>
+        </div>
+
+        <div class="row">
+            <span class="form-label">Address:</span>
+            <span class="form-value"><%= personnel.homeAddress %></span>
+        </div>
+
+        <div class="row">
+            <span class="form-label">Civil Status:</span>
+            <span class="form-value"><%= personnel.civilStatus %></span>
+        </div>
+
+        <div class="row">
+            <span class="form-label">Degree:</span>
+            <span class="form-value"><%= personnel.degree %></span>
+        </div>
+
+        <div class="row">
+            <span class="form-label">Special Order Number:</span>
+            <span class="form-value"><%= personnel.specialOrderNumber %></span>
+        </div>
+
+        <div class="row">
+            <span class="form-label">Entrance to Duty:</span>
+            <span class="form-value"><%= personnel.entranceToDutyDate ? personnel.entranceToDutyDate.toISOString().split('T')[0] : '' %></span>
+        </div>
+
+        <div class="row">
+            <span class="form-label">Assign to CIW:</span>
+            <span class="form-value"><%= personnel.assignToCIWDate ? personnel.assignToCIWDate.toISOString().split('T')[0] : '' %></span>
+        </div>
+
+        <div class="row">
+            <span class="form-label">Core Unit:</span>
+            <span class="form-value"><%= personnel.coreUnit %></span>
+        </div>
+
+        <div class="row">
+            <span class="form-label">Pre-Assigned:</span>
+            <span class="form-value"><%= personnel.preAssigned %></span>
+        </div>
+
+        <div class="row">
+            <span class="form-label">Concurrent:</span>
+            <span class="form-value"><%= personnel.concurrent %></span>
+        </div>
+
+        <div class="row">
+            <span class="form-label">Remarks:</span>
+            <span class="form-value"><%= personnel.remarks %></span>
+        </div>
+         
+
+    </div>
+    <script>
+        // Automatically trigger the print dialog when the page is loaded
+        window.onload = function() {
+            window.print();
+        };
+    
+        // Close the print preview window when the user clicks on the page
+        document.addEventListener("click", function() {
+            window.close();
+        });
+    </script>
+</body>
+</html>

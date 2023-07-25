@@ -1,0 +1,62 @@
+<!-- views/admin/masterlist.ejs -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Master List</title>
+    <style>
+        body {
+            background-color: rgba(0, 0, 0, 0.3); /* Apply a semi-transparent background to blur the content */
+        }
+
+        .masterlist-container {
+            background-color: #fff; /* Set a white background for the content container */
+            padding: 20px;
+            border-radius: 5px;
+            max-width: 600px;
+            margin: 50px auto; 
+        }
+
+        h1 {
+            margin-top: 0;
+        }
+
+        ol {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="masterlist-container">
+        <h1>Master List</h1>
+        <ol>
+            <% let count = 1; %>
+            <% for (const personnel of personnels) { %>
+                <li><%= count %>. <%= personnel.lastName %>, <%= personnel.firstName %> <%= personnel.middleName ? personnel.middleName[0] + '.' : '' %></li>
+                <% count++; %>
+            <% } %>
+        </ol>
+    </div>
+
+    <script>
+        // Function to trigger the print dialog automatically when the page loads
+        function printPage() {
+            // Add a class to body to remove the blur effect before printing
+            document.body.classList.remove('blur-background');
+            window.print();
+        }
+
+        // Trigger the print dialog automatically when the page loads
+        window.onload = printPage;
+        
+        // Close the print preview window when the user clicks on the page
+        document.addEventListener("click", function() {
+            window.close();
+        });
+    </script>
+</body>
+</html>
